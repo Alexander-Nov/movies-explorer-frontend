@@ -1,0 +1,7 @@
+.movies {
+  width: calc(100% - 2*70px);
+  padding: 70px 70px 0 70px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}

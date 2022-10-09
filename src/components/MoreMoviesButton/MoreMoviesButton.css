@@ -1,0 +1,21 @@
+.more-movies-button-area {
+  width: 100%;
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 80px;
+  margin: auto;
+}
+
+.more-movies-button-area__button {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  border: 1px solid #E8E8E8;
+  border-radius: 3px;
+  min-width: 320px;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 9px;
+}

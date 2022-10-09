@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FAFAFA;
+}
+
+.page {
+  width: 100%;
+  max-width: 1280px;
+  background-color: #FAFAFA;
+  color: #000000;
+  padding: 0;
+  margin: 0 auto;
+  font-family: Inter, Arial, sans-serif;
+  box-sizing: border-box;
+}
