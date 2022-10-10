@@ -1,8 +1,6 @@
 import React from "react";
 import checkboxOnStatusImage from "../../images/checkbox-on.png";
 import checkboxOffStatusImage from "../../images/checkbox-off.png";
-// import profilePath from "../../images/profile.png"
-// import { Link, Route } from "react-router-dom";
 
 function Checkbox({ isChecked, onCheckboxClick }) {
   return (

@@ -23,7 +23,7 @@
 }
 
 .card__title {
-  margin: 1px 0 1px 0;
+  margin: 7px 0 7px 0;
   padding: 0;
   /* width: 80%; */
   font-weight: 500;
@@ -47,6 +47,21 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+}
+
+.card__delete-button {
+  margin: 0 0 0 12px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  background: url("../../images/button-delete.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+.card__delete-button_hidden {
+  display: none;
 }
 
 .card__length {

@@ -1,0 +1,129 @@
+.register {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.register__content {
+  min-width: 396px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+}
+
+.register__logo-link {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  line-height: 1;
+  border: none;
+  width: 38px;
+  height: 38px;
+  align-self: flex-start;
+}
+
+.register__logo {
+  width: 38px;
+  height: 38px;
+  align-self: flex-start;
+}
+
+.register__title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  align-self: flex-start;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.register__fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.register__label {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #A0A0A0;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.register__input {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  width: 100%;
+  margin: 0 0 20px 0;
+  padding: 15px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 8px;
+  background: #F4F4F4;
+}
+
+.register__button {
+  margin-top: 71px;
+  background: #3456F3;
+  border: none;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+  width: 100%;
+  padding-top: 13px;
+  padding-bottom: 15px;
+  margin-bottom: 16px;
+}
+
+.register__button_disabled {
+  background: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.register__sign-in-area {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  justify-items: center;
+  align-items: center;
+}
+
+.register__sign-in-text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #A0A0A0;
+  margin: 0 8px 0 0;
+  padding: 0;
+}
+
+.register__sign-in-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #3456F3;
+  margin: 0;
+  padding: 0;
+}

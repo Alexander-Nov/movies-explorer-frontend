@@ -1,40 +1,10 @@
-.header {
-  width: calc(100% - 2*70px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 70px;
-}
-
-.header_dark-background {
-  background-color: #DDDEE3;
-}
-
-.header__logo-link {
-  margin: 0;
-  padding: 0;
-  text-decoration: none;
-  box-sizing: border-box;
-  line-height: 1;
-  border: none;
-  width: 38px;
-  height: 38px;
-}
-
-.header__logo {
-  width: 38px;
-  height: 38px;
-  margin: 0;
-  padding: 0;
-}
-
-.header__link-block {
+.navigation__link-block {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.header__link {
+.navigation__link {
   text-decoration: none;
   background-color: transparent;
   color: #000000;
@@ -46,17 +16,17 @@
   line-height: 18px;
 }
 
-.header__active-link {
+.navigation__active-link {
   font-weight: 500;
 }
 
-.header__link_start-page {
+.navigation__link_start-page {
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
 }
 
-.header__button {
+.navigation__button {
   background-color: #3456F3;
   color: #FFFFFF;
   border-radius: 3px;
@@ -69,7 +39,7 @@
   line-height: 16px;
 }
 
-.header__profile-link-block {
+.navigation__profile-link-block {
   background-color: transparent;
   color: #000000;
   margin: 0 0 0 30px;
@@ -81,7 +51,7 @@
   text-decoration: none;
 }
 
-.header__profile-link {
+.navigation__profile-link {
   color: #000000;
   margin: 0 13px 0 0;
   padding: 0;
@@ -94,7 +64,7 @@
   line-height: 16px;
 }
 
-.header__profile-image {
+.navigation__profile-image {
   width: 30px;
   height: 30px;
 }
