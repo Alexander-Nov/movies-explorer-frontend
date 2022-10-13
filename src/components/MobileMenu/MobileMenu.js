@@ -4,8 +4,8 @@ import { Link, Route } from "react-router-dom";
 
 function MobileMenu({ isMobileMenuOpened, setIsMobileMenuOpened }) {
 
-  function onCloseMenu (setIsMobileMenuOpened) {
-    setIsMobileMenuOpened(true);
+  function onCloseMenu () {
+    setIsMobileMenuOpened(false);
   }
 
   return (

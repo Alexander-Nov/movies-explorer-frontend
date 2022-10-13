@@ -4,10 +4,10 @@ import Navigation from "../Navigation/Navigation";
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 
-function Header(props) {
+function Header({ isMobileMenuOpened, setIsMobileMenuOpened }) {
 
   const userLocationPath = useLocation().pathname;
-  const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
+  // const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
     return (
       <header

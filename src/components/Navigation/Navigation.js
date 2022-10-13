@@ -4,7 +4,7 @@ import { Link, Route } from "react-router-dom";
 
 function Navigation({ isMobileMenuOpened, setIsMobileMenuOpened }) {
 
-  function onOpenMenu (setIsMobileMenuOpened) {
+  function onOpenMenu () {
     setIsMobileMenuOpened(true);
   }
 

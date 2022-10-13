@@ -15,6 +15,7 @@ import MobileMenu from "../MobileMenu/MobileMenu.js";
 function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [movieIsFound, setMovieIsFound] = React.useState(true);
+  const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
   return (
     <div className="page">
@@ -26,6 +27,8 @@ function App() {
         </Route>
         <Route path="/movies">
           <Header
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
           />
           {/* <MobileMenu /> */}
           <Movies
@@ -35,12 +38,18 @@ function App() {
           <Footer />
         </Route>
         <Route path="/saved-movies">
-          <Header />
+        <Header
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+          />
           <SavedMovies />
           <Footer />
         </Route>
         <Route path="/profile">
-          <Header />
+        <Header
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+          />
           <Profile />
           {/* <Footer /> */}
         </Route>
