@@ -1,5 +1,5 @@
 import React from 'react';
-import promoLogoPath from '../../images/promo-logo.png';
+import promoLogoPath from '../../images/promo-logo.svg';
 import NavTab from '../NavTab/NavTab';
 
 function Promo (props)  {

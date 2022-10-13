@@ -40,3 +40,34 @@
 .page404__go-back-link:hover {
   cursor: pointer;
 }
+
+@media screen and (max-width: 1279px) {
+  .page404__title {
+    margin-top: 408px;
+  }
+
+  .page404__go-back-link {
+    margin-bottom: 222px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .page404__title {
+    margin-top: 329px;
+    font-size: 80px;
+    line-height: 97px;
+    margin-bottom: 10px;
+  }
+
+  .page404__text {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 284px;
+  }
+
+  .page404__go-back-link {
+    margin-bottom: 30px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

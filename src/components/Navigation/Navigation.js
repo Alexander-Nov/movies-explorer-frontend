@@ -1,12 +1,12 @@
 import React from "react";
-import profilePath from "../../images/profile.png"
+import profilePath from "../../images/profile.svg"
 import { Link, Route } from "react-router-dom";
 
-function Navigation({ loggedIn }) {
+function Navigation({ isMobileMenuOpened, setIsMobileMenuOpened }) {
 
-  // function handleMenuOpen() {
-  //   props.onMenuOpen();
-  // }
+  function onOpenMenu (setIsMobileMenuOpened) {
+    setIsMobileMenuOpened(true);
+  }
 
   return (
     <div className="navigation">
@@ -25,6 +25,9 @@ function Navigation({ loggedIn }) {
             <img className="navigation__profile-image" src={profilePath} alt="Вход в профиль аккаунта" />
           </Link>
         </div>
+        <div className="navigation__burger-menu">
+          <button className="navigation__burger-menu-button" onClick={onOpenMenu}></button>
+        </div>
       </Route>
 
       <Route path="/saved-movies">
@@ -39,6 +42,9 @@ function Navigation({ loggedIn }) {
             <p className="navigation__profile-link">Аккаунт</p>
             <img className="navigation__profile-image" src={profilePath} alt="Вход в профиль аккаунта" />
           </Link>
+        </div>
+        <div className="navigation__burger-menu">
+          <button className="navigation__burger-menu-button"></button>
         </div>
       </Route>
 
@@ -55,6 +61,9 @@ function Navigation({ loggedIn }) {
             <img className="navigation__profile-image" src={profilePath} alt="Вход в профиль аккаунта" />
           </Link>
         </div>
+        <div className="navigation__burger-menu">
+          <button className="navigation__burger-menu-button"></button>
+        </div>
       </Route>
 
       <Route exact path="/">
@@ -65,6 +74,9 @@ function Navigation({ loggedIn }) {
           <Link to="/signin" className="navigation__button-link">
             <button className="navigation__button">Войти</button>
           </Link>
+        </div>
+        <div className="navigation__burger-menu">
+          <button className="navigation__burger-menu-button"></button>
         </div>
       </Route>
     </div>

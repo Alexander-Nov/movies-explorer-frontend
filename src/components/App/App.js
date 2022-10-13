@@ -10,14 +10,11 @@ import Register from "../Register/Register.js";
 import { Route, Switch } from "react-router-dom";
 import Login from "../Login/Login.js";
 import Page404 from "../Page404/Page404.js";
+import MobileMenu from "../MobileMenu/MobileMenu.js";
 
 function App() {
-  // const [loggedIn, setLoggedIn] = React.useState(false);
-
-  // исправить потом на реальный алгоритм по запросу статуса авторизации
-  // React.useEffect(() => {
-  //   setLoggedIn(true);
-  // }, []);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [movieIsFound, setMovieIsFound] = React.useState(true);
 
   return (
     <div className="page">
@@ -28,8 +25,13 @@ function App() {
           <Footer />
         </Route>
         <Route path="/movies">
-          <Header />
-          <Movies />
+          <Header
+          />
+          {/* <MobileMenu /> */}
+          <Movies
+            isLoading={isLoading}
+            movieIsFound={movieIsFound}
+          />
           <Footer />
         </Route>
         <Route path="/saved-movies">
@@ -40,7 +42,7 @@ function App() {
         <Route path="/profile">
           <Header />
           <Profile />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
         <Route path="/signup">
           <Register />

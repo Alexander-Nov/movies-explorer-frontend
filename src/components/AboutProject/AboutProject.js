@@ -4,8 +4,6 @@ function AboutProject (props)  {
   return (
     <div className="about-project">
       <h2 className="about-project__title">О проекте</h2>
-      {/* <h3 className="aboutProject__subtitle">7 технологий</h3>
-      <p className="aboutProject__description">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.</p> */}
       <ul className="about-project__info-list">
         <li className="about-project__info-item">
           <h4 className="about-project__info-title">Дипломный проект включал 5 этапов</h4>

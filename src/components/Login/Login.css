@@ -30,6 +30,11 @@
   width: 38px;
   height: 38px;
   align-self: flex-start;
+  transition: opacity 0.4s linear;
+}
+
+.login__logo:hover {
+  opacity: 0.8;
 }
 
 .login__title {
@@ -94,6 +99,11 @@
   padding-top: 13px;
   padding-bottom: 15px;
   margin-bottom: 16px;
+  transition: opacity 0.4s linear;
+}
+
+.login__button:hover {
+  opacity: 0.8;
 }
 
 .login__button_disabled {
@@ -126,4 +136,50 @@
   color: #3456F3;
   margin: 0;
   padding: 0;
+  transition: opacity 0.4s linear;
+}
+
+.login__sign-up-link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 1279px) {
+  .login__content {
+    min-width: 396px;
+    padding-top: 232px;
+    padding-bottom: 232px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .login__content {
+    padding: 56px 30px 30px 30px;
+    min-width: calc(100% - 2 * 30px);
+  }
+
+  .login__logo-link {
+    align-self: center;
+  }
+
+  .login__title {
+    align-self: center;
+    margin-top: 50px;
+    margin-bottom: 80px;
+  }
+
+  .login__button {
+    margin-top: 247px;
+    margin-bottom: 14px;
+    font-size: 12px;
+  }
+
+  .login__sign-in-text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .login__sign-up-link {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

@@ -8,3 +8,22 @@
   column-gap: 24px;
   row-gap: 37px;
 }
+
+@media screen and (max-width: 1279px) {
+  .movies-card-list {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 30px;
+    row-gap: 30px;
+    margin-bottom: 30px;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .movies-card-list {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+    padding-top: 41px;
+    margin-bottom: 26px;
+  }
+}

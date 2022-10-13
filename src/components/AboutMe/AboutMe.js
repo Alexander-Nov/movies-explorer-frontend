@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import fotoLink from "../../images/aboutme-foto.jpg";
+import Portfolio from "../Portfolio/Portfolio";
 
 function AboutMe(props) {
   return (
@@ -16,8 +18,7 @@ function AboutMe(props) {
             Контур». После того, как прошёл курс по веб-разработке, начал
             заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <p className="about-me__github-link">Github</p>
-          <p className="about-me__portfolio-link">Портфолио</p>
+          <Link to="https://github.com/Alexander-Nov" className="about-me__github-link">Github</Link>
         </div>
         <img
           className="about-me__author-foto"
@@ -25,20 +26,9 @@ function AboutMe(props) {
           alt="фотография создателя сайта"
         />
       </div>
-      <ul className="about-me__project-links">
-        <li className="about-me__project-link">
-          <p className="about-me__project-link-text">Статичный сайт</p>
-          <a href="/" className="about-me__project-link-arrow">↗</a>
-        </li>
-        <li className="about-me__project-link">
-          <p className="about-me__project-link-text">Адаптивный сайт</p>
-          <a href="/" className="about-me__project-link-arrow">↗</a>
-        </li>
-        <li className="about-me__project-link">
-          <p className="about-me__project-link-text">Одностраничное приложение</p>
-          <a href="/" className="about-me__project-link-arrow">↗</a>
-        </li>
-      </ul>
+
+      <Portfolio />
+
     </div>
   );
 }

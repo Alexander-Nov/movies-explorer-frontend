@@ -1,6 +1,6 @@
 import React from "react";
-import checkboxOnStatusImage from "../../images/checkbox-on.png";
-import checkboxOffStatusImage from "../../images/checkbox-off.png";
+import checkboxOnStatusImage from "../../images/checkbox-on.svg";
+import checkboxOffStatusImage from "../../images/checkbox-off.svg";
 
 function Checkbox({ isChecked, onCheckboxClick }) {
   return (

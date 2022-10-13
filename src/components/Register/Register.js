@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoPath from "../../images/header-logo.png";
+import logoPath from "../../images/header-logo.svg";
 
 function Register(props) {
   const [name, setName] = React.useState("Виталий");
-  const [email, setEmail] = React.useState("pochta@yandex.ru|");
+  const [email, setEmail] = React.useState("pochta@yandex.ru");
   const [password, setPassword] = React.useState("");
   const [isDisabled, setIsDisabled] = React.useState(false);
 

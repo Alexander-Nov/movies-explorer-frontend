@@ -27,3 +27,19 @@
   font-size: 13px;
   line-height: 18px;
 }
+
+
+@media screen and (max-width: 767px) {
+  .checkbox-group {
+    margin-top: 29px;
+  }
+
+  .checkbox-group__title {
+    font-size: 11px;
+  }
+
+  .checkbox-group__button {
+    margin: 0 13px 0 0;
+  }
+
+}

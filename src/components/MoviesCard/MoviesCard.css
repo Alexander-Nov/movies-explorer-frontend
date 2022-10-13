@@ -11,6 +11,8 @@
 .card__image {
   margin: 0;
   padding: 0;
+  width: 100%;
+  object-fit: contain;
 }
 
 .card__title-block {
@@ -25,7 +27,6 @@
 .card__title {
   margin: 7px 0 7px 0;
   padding: 0;
-  /* width: 80%; */
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
@@ -36,14 +37,14 @@
   padding: 0;
   width: 30px;
   height: 30px;
-  background: url("../../images/heart.png");
+  background: url("../../images/heart.svg");
   background-repeat: no-repeat;
   background-position: center;
   border: none;
 }
 
 .card__heart_active {
-  background: url("../../images/heart-active.png");
+  background: url("../../images/heart-active.svg");
   background-repeat: no-repeat;
   background-position: center;
   border: none;
@@ -70,4 +71,42 @@
   font-size: 11px;
   line-height: 13px;
   color: #A0A0A0;
+}
+
+@media screen and (max-width: 1279px) {
+  .card__title-block {
+    margin: 8px 14px 5px;
+  }
+
+  .card__title {
+    margin: 6px 0 7px 0;
+  }
+
+  .card__length {
+    margin: 2px auto 15px 14px;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .card__title {
+    font-size: 12px;
+    line-height: 15px;
+    /* margin: 6px 0 7px 0; */
+  }
+
+  .card__title-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+    padding: 0;
+  }
+
+  .card__length {
+    font-size: 10px;
+    line-height: 12px;
+    margin: 1px auto 14px 14px;
+  }
 }

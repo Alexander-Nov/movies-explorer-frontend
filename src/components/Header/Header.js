@@ -1,14 +1,13 @@
 import React from "react";
-import logoPath from "../../images/header-logo.png";
+import logoPath from "../../images/header-logo.svg";
 import Navigation from "../Navigation/Navigation";
 import { Link, useLocation } from "react-router-dom";
+import MobileMenu from "../MobileMenu/MobileMenu";
 
 function Header(props) {
-  // function handleMenuOpen() {
-  //   props.onMenuOpen();
-  // }
 
   const userLocationPath = useLocation().pathname;
+  const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
     return (
       <header
@@ -24,7 +23,14 @@ function Header(props) {
           />
         </Link>
 
-        <Navigation />
+        <Navigation
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+        />
+        <MobileMenu
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+        />
       </header>
     );
 

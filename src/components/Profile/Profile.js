@@ -3,8 +3,8 @@ import React from "react";
 function Profile(props) {
   const [name, setName] = React.useState("Виталий");
   const [email, setEmail] = React.useState("pochta@yandex.ru");
-  const [isDisabled, setIsDisabled] = React.useState(true);
-  const [isReductionMode, setIsReductionMode] = React.useState(true);
+  const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
+  const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
 
   function handleChangeName(e) {
     e.preventDefault();
@@ -25,6 +25,14 @@ function Profile(props) {
   function handleExit(e) {
     e.preventDefault();
     // тут будет логика выхода из аккаунта
+  }
+
+  function handleSaveProfileData(e) {
+    e.preventDefault();
+    setIsReductionMode(false);
+    setIsDisabled(true);
+
+    // тут будет логика сохранения данных
   }
 
   return (
@@ -81,9 +89,14 @@ function Profile(props) {
               </div>
             ) : (
               <button
-              className={`profile__save-button${isDisabled ? " profile__save-button_disabled" : ""}`}
-              disabled={isDisabled}
-              >Сохранить</button>
+                className={`profile__save-button${
+                  isDisabled ? " profile__save-button_disabled" : ""
+                }`}
+                disabled={isDisabled}
+                onClick={handleSaveProfileData}
+              >
+                Сохранить
+              </button>
             )}
           </section>
         </fieldset>

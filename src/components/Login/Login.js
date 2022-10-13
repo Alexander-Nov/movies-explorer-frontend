@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoPath from "../../images/header-logo.png";
+import logoPath from "../../images/header-logo.svg";
 
 function Login (props) {
   const [email, setEmail] = React.useState("");

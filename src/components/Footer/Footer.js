@@ -2,10 +2,6 @@ import React from "react";
 
 function Footer(props) {
 
-  // function handleMenuOpen() {
-  //   props.onMenuOpen();
-  // }
-
     return (
       <header className="footer">
         <h4 className="footer__title">
