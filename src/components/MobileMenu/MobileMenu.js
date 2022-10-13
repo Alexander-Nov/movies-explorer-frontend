@@ -39,27 +39,27 @@ function MobileMenu({ isMobileMenuOpened, setIsMobileMenuOpened }) {
         </Route>
 
         <Route path="/saved-movies">
-          <div className="navigation__link-block">
-            <Link to="movies" className="navigation__link">
-              Фильмы
+        <div className="mobileMenu__link-block">
+            <Link to="/" className="mobileMenu__link">
+              Главная
             </Link>
             <Link
-              to="saved-movies"
-              className="navigation__link navigation__active-link"
+              to="movies"
+              className="mobileMenu__link"
             >
+              Фильмы
+            </Link>
+            <Link to="saved-movies" className="mobileMenu__link mobileMenu__active-link">
               Сохраненные фильмы
             </Link>
-            <Link to="profile" className="navigation__profile-link-block">
-              <p className="navigation__profile-link">Аккаунт</p>
+            <Link to="profile" className="mobileMenu__profile-link-block">
+              <p className="mobileMenu__profile-link">Аккаунт</p>
               <img
-                className="navigation__profile-image"
+                className="mobileMenu__profile-image"
                 src={profilePath}
                 alt="Вход в профиль аккаунта"
               />
             </Link>
-          </div>
-          <div className="navigation__burger-menu">
-            <button className="navigation__burger-menu-button"></button>
           </div>
         </Route>
 
@@ -88,19 +88,27 @@ function MobileMenu({ isMobileMenuOpened, setIsMobileMenuOpened }) {
         </Route>
 
         <Route exact path="/">
-          <div className="navigation__link-block">
+        <div className="mobileMenu__link-block">
+            <Link to="/" className="mobileMenu__link mobileMenu__active-link">
+              Главная
+            </Link>
             <Link
-              to="/signup"
-              className="navigation__link navigation__link_start-page"
+              to="movies"
+              className="mobileMenu__link"
             >
-              Регистрация
+              Фильмы
             </Link>
-            <Link to="/signin" className="navigation__button-link">
-              <button className="navigation__button">Войти</button>
+            <Link to="saved-movies" className="mobileMenu__link">
+              Сохраненные фильмы
             </Link>
-          </div>
-          <div className="navigation__burger-menu">
-            <button className="navigation__burger-menu-button"></button>
+            <Link to="profile" className="mobileMenu__profile-link-block">
+              <p className="mobileMenu__profile-link">Аккаунт</p>
+              <img
+                className="mobileMenu__profile-image"
+                src={profilePath}
+                alt="Вход в профиль аккаунта"
+              />
+            </Link>
           </div>
         </Route>
       </div>

@@ -24,7 +24,6 @@
   padding-top: 159px;
   padding-bottom: 92px;
   width: 44%;
-  /* opacity: 1; */
 }
 
 .mobileMenu__link-block {
@@ -37,7 +36,6 @@
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  /* z-index: 2; */
 }
 
 .mobileMenu__link {
@@ -98,4 +96,21 @@
   cursor: pointer;
   opacity: 0.7;
   transform: rotate(45deg);
+}
+
+
+@media screen and (max-width: 767px) {
+  .mobileMenu__menu {
+    padding: 144px 0 48px 0;
+    width: 100%;
+  }
+
+  .mobileMenu__link {
+    padding-bottom: 7px;
+    margin-bottom: 17px;
+  }
+
+  .mobileMenu__profile-link-block {
+    margin-top: 411px;
+  }
 }
