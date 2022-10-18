@@ -1,0 +1,116 @@
+.mobileMenu {
+  display: none;
+  background-color: rgba(0, 0, 0, .3);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mobileMenu_active {
+  display: block;
+}
+
+.mobileMenu__menu {
+  background-color: #FAFAFA;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-left: 90px;
+  padding-right: 90px;
+  padding-top: 159px;
+  padding-bottom: 92px;
+  width: 44%;
+}
+
+.mobileMenu__link-block {
+  font-size: 18px;
+  line-height: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.mobileMenu__link {
+  padding-bottom: 4px;
+  margin-bottom: 24px;
+  text-decoration: none;
+  color: #000000
+}
+
+.mobileMenu__active-link {
+  border-bottom: 2px solid #000000;
+}
+
+.mobileMenu__profile-link-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: #000000;
+  margin-top: 583px;
+}
+
+.mobileMenu__profile-link {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  margin-right: 13px;
+}
+
+.mobileMenu__profile-image {
+  background-color: #F4F4F4;
+  border-radius: 6px;
+  background-image: url('../../images/profile.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+  padding: 9px 9px;
+}
+
+.mobileMenu__close-button {
+  display: block;
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  background-color: transparent;
+  background-image: url('../../images/close-mob-menu.svg');
+  transform: rotate(-45deg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  transition: opacity 0.4s linear;
+  transition: transform 0.5s linear;
+}
+
+.mobileMenu__close-button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transform: rotate(45deg);
+}
+
+
+@media screen and (max-width: 767px) {
+  .mobileMenu__menu {
+    padding: 144px 0 48px 0;
+    width: 100%;
+  }
+
+  .mobileMenu__link {
+    padding-bottom: 7px;
+    margin-bottom: 17px;
+  }
+
+  .mobileMenu__profile-link-block {
+    margin-top: 411px;
+  }
+}
