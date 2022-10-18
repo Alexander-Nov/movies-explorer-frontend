@@ -7,7 +7,6 @@ import MobileMenu from "../MobileMenu/MobileMenu";
 function Header({ isMobileMenuOpened, setIsMobileMenuOpened }) {
 
   const userLocationPath = useLocation().pathname;
-  // const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
     return (
       <header

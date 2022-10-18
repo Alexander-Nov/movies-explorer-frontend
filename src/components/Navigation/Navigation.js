@@ -44,7 +44,7 @@ function Navigation({ isMobileMenuOpened, setIsMobileMenuOpened }) {
           </Link>
         </div>
         <div className="navigation__burger-menu">
-          <button className="navigation__burger-menu-button"></button>
+        <button className="navigation__burger-menu-button" onClick={onOpenMenu}></button>
         </div>
       </Route>
 
@@ -62,7 +62,7 @@ function Navigation({ isMobileMenuOpened, setIsMobileMenuOpened }) {
           </Link>
         </div>
         <div className="navigation__burger-menu">
-          <button className="navigation__burger-menu-button"></button>
+        <button className="navigation__burger-menu-button" onClick={onOpenMenu}></button>
         </div>
       </Route>
 
@@ -76,7 +76,7 @@ function Navigation({ isMobileMenuOpened, setIsMobileMenuOpened }) {
           </Link>
         </div>
         <div className="navigation__burger-menu">
-          <button className="navigation__burger-menu-button"></button>
+        <button className="navigation__burger-menu-button" onClick={onOpenMenu}></button>
         </div>
       </Route>
     </div>

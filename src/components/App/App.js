@@ -21,7 +21,10 @@ function App() {
     <div className="page">
       <Switch>
         <Route exact path="/">
-          <Header />
+        <Header
+          isMobileMenuOpened={isMobileMenuOpened}
+          setIsMobileMenuOpened={setIsMobileMenuOpened}
+          />
           <Main />
           <Footer />
         </Route>
@@ -30,7 +33,6 @@ function App() {
           isMobileMenuOpened={isMobileMenuOpened}
           setIsMobileMenuOpened={setIsMobileMenuOpened}
           />
-          {/* <MobileMenu /> */}
           <Movies
             isLoading={isLoading}
             movieIsFound={movieIsFound}
@@ -51,7 +53,6 @@ function App() {
           setIsMobileMenuOpened={setIsMobileMenuOpened}
           />
           <Profile />
-          {/* <Footer /> */}
         </Route>
         <Route path="/signup">
           <Register />
