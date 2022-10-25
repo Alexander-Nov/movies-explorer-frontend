@@ -272,6 +272,7 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Header
+                loggedIn={loggedIn}
                 isMobileMenuOpened={isMobileMenuOpened}
                 setIsMobileMenuOpened={setIsMobileMenuOpened}
               />
@@ -280,6 +281,7 @@ function App() {
             </Route>
             <Route path="/movies">
               <Header
+                loggedIn={loggedIn}
                 isMobileMenuOpened={isMobileMenuOpened}
                 setIsMobileMenuOpened={setIsMobileMenuOpened}
               />
@@ -303,6 +305,7 @@ function App() {
             </Route>
             <Route path="/saved-movies">
               <Header
+                loggedIn={loggedIn}
                 isMobileMenuOpened={isMobileMenuOpened}
                 setIsMobileMenuOpened={setIsMobileMenuOpened}
               />
@@ -320,6 +323,7 @@ function App() {
             </Route>
             <Route path="/profile">
               <Header
+                loggedIn={loggedIn}
                 isMobileMenuOpened={isMobileMenuOpened}
                 setIsMobileMenuOpened={setIsMobileMenuOpened}
               />
