@@ -8,11 +8,18 @@
   border-radius: 6px;
 }
 
+.card__link {
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
 .card__image {
   margin: 0;
   padding: 0;
   width: 100%;
-  object-fit: contain;
+  height: calc((100vw - 140px - 48px)/3*0.55);
+  object-fit: cover;
 }
 
 .card__title-block {
@@ -30,6 +37,7 @@
   font-weight: 500;
   font-size: 13px;
   line-height: 16px;
+  color: #000000;
 }
 
 .card__heart {
@@ -41,6 +49,10 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+}
+
+.card__heart:hover {
+  cursor: pointer;
 }
 
 .card__heart_active {
@@ -61,6 +73,10 @@
   border: none;
 }
 
+.card__delete-button:hover {
+  cursor: pointer;
+}
+
 .card__delete-button_hidden {
   display: none;
 }
@@ -74,6 +90,10 @@
 }
 
 @media screen and (max-width: 1279px) {
+  .card__image {
+    height: calc((100vw - 30px)/2*0.55);
+  }
+
   .card__title-block {
     margin: 8px 14px 5px;
   }
@@ -89,6 +109,10 @@
 
 
 @media screen and (max-width: 767px) {
+  .card__image {
+    height: calc((100vw - 30px)*0.55);
+  }
+
   .card__title {
     font-size: 12px;
     line-height: 15px;

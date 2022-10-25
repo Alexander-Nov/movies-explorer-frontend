@@ -1,10 +1,13 @@
 import React from "react";
+import { CurrentUserContext } from "../../contexts/currentUserContext";
 
-function Profile(props) {
-  const [name, setName] = React.useState("Виталий");
-  const [email, setEmail] = React.useState("pochta@yandex.ru");
+function Profile({ onUpdateUser, onSignOut }) {
   const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
   const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
+  const currentUser = React.useContext(CurrentUserContext);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
 
   function handleChangeName(e) {
     e.preventDefault();
@@ -22,23 +25,32 @@ function Profile(props) {
     setIsReductionMode(true);
   }
 
-  function handleExit(e) {
+  function handleSignOut(e) {
     e.preventDefault();
-    // тут будет логика выхода из аккаунта
+    onSignOut();
   }
 
   function handleSaveProfileData(e) {
     e.preventDefault();
+     onUpdateUser({
+      name,
+      email
+    });
     setIsReductionMode(false);
     setIsDisabled(true);
 
     // тут будет логика сохранения данных
   }
 
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
+
   return (
     <section className="profile">
       <form className="profile__form">
-        <h1 className="profile__title">Привет, Виталий!</h1>
+        <h1 className="profile__title">{`Привет, ${name}!`}</h1>
         <fieldset className="profile__fieldset">
           <div className="profile__input-line">
             <label className="profile__label" for="name">
@@ -49,7 +61,7 @@ function Profile(props) {
               id="name"
               name="name"
               type="text"
-              value={name}
+              value={name || ""}
               onChange={handleChangeName}
               required
               minLength="2"
@@ -66,7 +78,7 @@ function Profile(props) {
               id="email"
               name="email"
               type="text"
-              value={email}
+              value={email || ""}
               onChange={handleChangeEmail}
               required
               minLength="2"
@@ -83,7 +95,7 @@ function Profile(props) {
                 >
                   Редактировать
                 </button>
-                <button className="profile__exit-button" onClick={handleExit}>
+                <button className="profile__exit-button" onClick={handleSignOut}>
                   Выйти из аккаунта
                 </button>
               </div>

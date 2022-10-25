@@ -1,7 +1,7 @@
 import React from "react";
 import Preloader from '../Preloader/Preloader';
 
-function MoviesNotFound({ isLoading }) {
+function MoviesNotFound({ isLoading, searchStringIsMissed }) {
   if (isLoading) {
     return (
       <Preloader />
@@ -9,7 +9,7 @@ function MoviesNotFound({ isLoading }) {
   } else {
     return (
       <div className="movies-not-found__container">
-        <p className="movies-not-found__text">Ничего не найдено</p>
+        <p className="movies-not-found__text">{searchStringIsMissed ? "Нужно ввести ключевое слово" : "Ничего не найдено"}</p>
       </div>
     );
   }

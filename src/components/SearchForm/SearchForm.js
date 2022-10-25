@@ -1,9 +1,8 @@
 import React from 'react';
 import Checkbox from '../Checkbox/Checkbox';
 
-function SearchForm (props)  {
-  const [searchingMovieTitle, setSearchingMovieTitle] = React.useState("");
-  const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(false);
+function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilmsOnlyStatus, setShortFilmsOnlyStatus, setSearchStringIsMissed })  {
+  const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString);
 
   function handleChangeMovieTitle(e) {
     e.preventDefault();
@@ -15,19 +14,28 @@ function SearchForm (props)  {
     setShortFilmsOnlyStatus(!shortFilmsOnlyStatus);
   }
 
+  function handleSearchMovies(e) {
+    e.preventDefault();
+    if (searchingMovieTitle.length === 0) {
+      setSearchStringIsMissed(true);
+      setMovieIsFound(false);
+    } else {
+      onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+    }
+
+    (searchingMovieTitle.length === 0) ? setSearchStringIsMissed(true) : onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+  }
+
   return (
     <div className="search">
-      <form className="search__form">
+      <form className="search__form" onSubmit={handleSearchMovies}>
         <fieldset className="search__fieldset">
           <input
             type="text"
             id="input-movie"
             className="search__input search__input-movie"
             name="input-movie"
-            minLength="2"
-            maxLength="80"
             placeholder="Фильм"
-            required
             value={searchingMovieTitle || ""}
             onChange={handleChangeMovieTitle}
           />

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logoPath from "../../images/header-logo.svg";
 
-function Register(props) {
+function Register({ onAddUser }) {
   const [name, setName] = React.useState("Виталий");
   const [email, setEmail] = React.useState("pochta@yandex.ru");
   const [password, setPassword] = React.useState("");
@@ -25,6 +25,11 @@ function Register(props) {
 
   function handleSignUp(e) {
     e.preventDefault();
+    onAddUser({
+      name,
+      email,
+      password
+    });
     // setIsDisabled(false);
   }
 

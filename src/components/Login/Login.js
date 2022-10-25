@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logoPath from "../../images/header-logo.svg";
 
-function Login (props) {
+function Login ({ onEnterUser }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isDisabled, setIsDisabled] = React.useState(false);
@@ -18,8 +18,12 @@ function Login (props) {
     setPassword(e.target.value);
   }
 
-  function handleSignUp(e) {
+  function handleSignIn(e) {
     e.preventDefault();
+    onEnterUser({
+      email,
+      password,
+    });
     // setIsDisabled(false);
   }
 
@@ -67,7 +71,7 @@ function Login (props) {
               disabled={isDisabled}
             />
 
-            <button className={`login__button${isDisabled ? " login__button_disabled" : ""}`} onClick={handleSignUp} disabled={isDisabled}>
+            <button className={`login__button${isDisabled ? " login__button_disabled" : ""}`} onClick={handleSignIn} disabled={isDisabled}>
               Войти
             </button>
 
