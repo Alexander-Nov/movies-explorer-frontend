@@ -1,3 +1,5 @@
+import { MAIN_API_BASE_URL } from '../utils/constants';
+
 class MainApi {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -142,7 +144,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: "https://api.diplom.novoselov.nomorepartiesxyz.ru",
+  baseUrl: MAIN_API_BASE_URL,
   headers: {
     authorization: `Bearer ${localStorage.getItem('token') || ""}`,
     "content-type": "application/json",

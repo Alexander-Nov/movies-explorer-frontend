@@ -11,7 +11,9 @@ function Header({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened }) {
     return (
       <header
         className={`header ${
-          userLocationPath === "/" ? "header_dark-background" : ""
+          userLocationPath === "/" ? "header_dark-background header_spaced" : ""
+        } ${
+          userLocationPath === "/profile" ? "header_spaced" : ""
         }`}
       >
         <Link to="/" className="header__logo-link">

@@ -3,9 +3,18 @@ import checkboxOnStatusImage from "../../images/checkbox-on.svg";
 import checkboxOffStatusImage from "../../images/checkbox-off.svg";
 
 function Checkbox({ isChecked, onCheckboxClick }) {
+
+  const handleCheckboxClick = () => {
+    onCheckboxClick();
+  };
+
+  // React.useEffect(() => {
+  //   console.log(`isChecked = ${isChecked}`);
+  // }, [isChecked])
+
   return (
     <div className="checkbox-group">
-      <button className="checkbox-group__button" onClick={onCheckboxClick}>
+      <button className="checkbox-group__button" onClick={handleCheckboxClick}>
         <img
           className="checkbox-group__image"
           src={`${isChecked ? checkboxOnStatusImage : checkboxOffStatusImage}`}

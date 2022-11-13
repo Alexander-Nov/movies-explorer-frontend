@@ -2,16 +2,36 @@ import React from 'react';
 import Checkbox from '../Checkbox/Checkbox';
 
 function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilmsOnlyStatus, setShortFilmsOnlyStatus, setSearchStringIsMissed })  {
+
+  let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
   const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString);
+  const [isSerchingStarted, setIsSerchingStarted] = React.useState(moviesIsPresent ? true : false);
 
   function handleChangeMovieTitle(e) {
     e.preventDefault();
     setSearchingMovieTitle(e.target.value);
   }
 
-  function handleChangeShortFilmsOnlyStatus(e) {
-    e.preventDefault();
-    setShortFilmsOnlyStatus(!shortFilmsOnlyStatus);
+  // function handleChangeShortFilmsOnlyStatus() {
+  //   if (isSerchingStarted) {
+  //     setShortFilmsOnlyStatus(shortFilmsOnlyStatus ? false : true);
+  //     if (searchingMovieTitle.length === 0) {
+  //       setSearchStringIsMissed(true);
+  //       setMovieIsFound(false);
+  //     } else {
+  //       setMovieIsFound(true);
+  //     }
+  //   }
+  // }
+
+  function handleChangeShortFilmsOnlyStatus() {
+      setShortFilmsOnlyStatus(shortFilmsOnlyStatus ? false : true);
+      if (searchingMovieTitle.length === 0) {
+        setSearchStringIsMissed(true);
+        setMovieIsFound(false);
+      } else {
+        setMovieIsFound(true);
+      }
   }
 
   function handleSearchMovies(e) {
@@ -20,10 +40,12 @@ function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilm
       setSearchStringIsMissed(true);
       setMovieIsFound(false);
     } else {
+      setMovieIsFound(true);
       onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+      // setIsSerchingStarted(true);
     }
 
-    (searchingMovieTitle.length === 0) ? setSearchStringIsMissed(true) : onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+    // (searchingMovieTitle.length === 0) ? setSearchStringIsMissed(true) : onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
   }
 
   return (

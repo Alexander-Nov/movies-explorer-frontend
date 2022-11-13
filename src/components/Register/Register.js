@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import logoPath from "../../images/header-logo.svg";
 
 function Register({ onAddUser }) {
-  const [name, setName] = React.useState("Виталий");
-  const [email, setEmail] = React.useState("pochta@yandex.ru");
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isDisabled, setIsDisabled] = React.useState(false);
 
@@ -46,7 +46,7 @@ function Register({ onAddUser }) {
         <h1 className="register__title">Добро пожаловать!</h1>
         <form className="register__form">
           <fieldset className="register__fieldset">
-            <label className="register__label" for="name">
+            <label className="register__label" htmlFor="name">
               Имя
             </label>
             <input
@@ -61,7 +61,7 @@ function Register({ onAddUser }) {
               disabled={isDisabled}
             />
 
-            <label className="register__label" for="email">
+            <label className="register__label" htmlFor="email">
               E-mail
             </label>
             <input
@@ -76,7 +76,7 @@ function Register({ onAddUser }) {
               disabled={isDisabled}
             />
 
-            <label className="register__label" for="password">
+            <label className="register__label" htmlFor="password">
               Пароль
             </label>
             <input

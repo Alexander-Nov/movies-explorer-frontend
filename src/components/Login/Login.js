@@ -41,7 +41,7 @@ function Login ({ onEnterUser }) {
         <form className="login__form">
           <fieldset className="login__fieldset">
 
-            <label className="login__label" for="email">
+            <label className="login__label" htmlFor="email">
               E-mail
             </label>
             <input
@@ -56,7 +56,7 @@ function Login ({ onEnterUser }) {
               disabled={isDisabled}
             />
 
-            <label className="login__label" for="password">
+            <label className="login__label" htmlFor="password">
               Пароль
             </label>
             <input

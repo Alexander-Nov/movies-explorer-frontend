@@ -1,33 +1,50 @@
-import React from 'react';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import React from "react";
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { mainApi } from "../../utils/MainApi";
-import { MovieContext } from "../../contexts/MovieContext";
+import Header from "../Header/Header.js";
+import Footer from "../Footer/Footer.js";
 
-function SavedMovies ({ isLoading, movieIsFound, movieList, savedMovies, setSavedMovies, baseUrl, onLike, onDislike })  {
-
+function SavedMovies({
+  loggedIn,
+  isMobileMenuOpened,
+  setIsMobileMenuOpened,
+  isLoading,
+  movieIsFound,
+  movieList,
+  savedMovies,
+  setSavedMovies,
+  baseUrl,
+  onLike,
+  onDislike,
+}) {
   // const { moviesCards, savedMovies } = React.useContext(MovieContext);
 
-React.useEffect(() => {
-  mainApi.
-  getMovies()
-  .then((resMovies) => {
-    setSavedMovies(resMovies);
-    // console.log(resMovies);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-}, []);
+  React.useEffect(() => {
+    mainApi
+      .getMovies()
+      .then((resMovies) => {
+        setSavedMovies(resMovies);
+        // console.log(resMovies);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-// React.useEffect(() => {
-//   return () => {
-//     setSavedMovies(JSON.parse(localStorage.getItem('currentlySavedMovies')));
-//   };
-// }, []);
+  // React.useEffect(() => {
+  //   return () => {
+  //     setSavedMovies(JSON.parse(localStorage.getItem('currentlySavedMovies')));
+  //   };
+  // }, []);
 
   return (
-    <div className="movies">
+    <section className="movies">
+      <Header
+        loggedIn={loggedIn}
+        isMobileMenuOpened={isMobileMenuOpened}
+        setIsMobileMenuOpened={setIsMobileMenuOpened}
+      />
       <SearchForm />
       <MoviesCardList
         movieList={savedMovies}
@@ -36,7 +53,8 @@ React.useEffect(() => {
         onLike={onLike}
         onDislike={onDislike}
       />
-    </div>
+      <Footer />
+    </section>
   );
 }
 

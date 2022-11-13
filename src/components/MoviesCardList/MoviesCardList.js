@@ -11,32 +11,16 @@ function MoviesCardList ({ movieList, savedMovies, setSavedMovies, baseUrl, onLi
 
   let slicedMoviesArray = movieList.slice(0, 12);
   const [moviesArrayForRender, setMoviesArrayForRender] = React.useState([]);
-  // console.log(moviesArrayForRender);
+
   React.useEffect(() => {
     setMoviesArrayForRender(slicedMoviesArray);
   }, []);
-
-
-
-  //   React.useEffect(() => {
-  //   const savedMoviesAtLocalStorage= JSON.parse(localStorage.getItem('currentlySavedMovies'));
-  //   console.log(savedMoviesAtLocalStorage);
-  //   // if (savedMoviesAtLocalStorage) {
-  //     // setSavedMovies(savedMoviesAtLocalStorage);
-  //   // }
-  // }, []);
-
-  // React.useEffect(() => {
-  //   console.log(movieList);
-  // }, []);
 
   return (
     <section className="movies-card-list">
 
       {movieList.map((movieItem, i) => {
         if (userLocationPath === "/saved-movies") {
-          // console.log(movieItem);
-          // console.log(currentUser._id);
           if (movieItem.owner === currentUser._id) {
             return (
               <MoviesCard

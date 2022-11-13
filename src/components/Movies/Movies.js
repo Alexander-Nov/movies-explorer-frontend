@@ -4,10 +4,12 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreMoviesButton from "../MoreMoviesButton/MoreMoviesButton";
 import MoviesNotFound from "../MoviesNotFound/MoviesNotFound";
 import { mainApi } from "../../utils/MainApi";
-// import { MovieContext } from "../../contexts/MovieContext";
+import Header from "../Header/Header.js";
+import Footer from "../Footer/Footer.js";
 
 function Movies({
   isLoading,
+  setIsLoading,
   movieIsFound,
   setMovieIsFound,
   movieList,
@@ -19,32 +21,43 @@ function Movies({
   onMoreMoviesClick,
   onSearch,
   allMoviesAreShown,
-  lastSearchingString
+  lastSearchingString,
+  loggedIn,
+  isMobileMenuOpened,
+  setIsMobileMenuOpened,
+  shortFilmsOnlyStatus,
+  setShortFilmsOnlyStatus,
 }) {
 
-  const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(false);
-  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(false);
-
-  // const { moviesCards } = React.useContext(MovieContext);
+  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
 
   React.useEffect(() => {
-    mainApi.
-      getMovies()
-        .then((resMovies) => {
-          setSavedMovies(resMovies);
-          // console.log(resMovies);
-        })
-        .catch((err) => {
+    setIsLoading(true);
+    mainApi.updateToken();
+    mainApi
+      .getMovies()
+      .then((resMovies) => {
+        setSavedMovies(resMovies);
+      })
+      .catch((err) => {
         console.log(err);
-        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   return (
-    <div className="movies">
+    <section className="movies">
+      <Header
+        loggedIn={loggedIn}
+        isMobileMenuOpened={isMobileMenuOpened}
+        setIsMobileMenuOpened={setIsMobileMenuOpened}
+      />
       <SearchForm
         setMovieIsFound={setMovieIsFound}
         onSearch={onSearch}
-        lastSearchingString={localStorage.getItem("lastSearchingString")}
+        lastSearchingString={lastSearchingString}
         shortFilmsOnlyStatus={shortFilmsOnlyStatus}
         setShortFilmsOnlyStatus={setShortFilmsOnlyStatus}
         setSearchStringIsMissed={setSearchStringIsMissed}
@@ -61,18 +74,19 @@ function Movies({
             shortFilmsOnlyStatus={shortFilmsOnlyStatus}
           />
           {!allMoviesAreShown ? (
-          <MoreMoviesButton
-            onMoreMoviesClick={onMoreMoviesClick}
-          />
-          ) : (<></>)}
+            <MoreMoviesButton onMoreMoviesClick={onMoreMoviesClick} />
+          ) : (
+            <></>
+          )}
         </div>
       ) : (
         <MoviesNotFound
-        isLoading={isLoading}
-        searchStringIsMissed={searchStringIsMissed}
+          isLoading={isLoading}
+          searchStringIsMissed={searchStringIsMissed}
         />
       )}
-    </div>
+      <Footer />
+    </section>
   );
 }
 

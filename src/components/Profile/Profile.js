@@ -1,7 +1,8 @@
 import React from "react";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
+import Header from "../Header/Header.js";
 
-function Profile({ onUpdateUser, onSignOut }) {
+function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdateUser, onSignOut }) {
   const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
   const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
   const currentUser = React.useContext(CurrentUserContext);
@@ -49,11 +50,16 @@ function Profile({ onUpdateUser, onSignOut }) {
 
   return (
     <section className="profile">
+      <Header
+        loggedIn={loggedIn}
+        isMobileMenuOpened={isMobileMenuOpened}
+        setIsMobileMenuOpened={setIsMobileMenuOpened}
+      />
       <form className="profile__form">
         <h1 className="profile__title">{`Привет, ${name}!`}</h1>
         <fieldset className="profile__fieldset">
           <div className="profile__input-line">
-            <label className="profile__label" for="name">
+            <label className="profile__label" htmlFor="name">
               Имя
             </label>
             <input
@@ -70,7 +76,7 @@ function Profile({ onUpdateUser, onSignOut }) {
           </div>
 
           <div className="profile__input-line">
-            <label className="profile__label" for="email">
+            <label className="profile__label" htmlFor="email">
               E-mail
             </label>
             <input
