@@ -78,7 +78,7 @@
   font-size: 13px;
   line-height: 16px;
   width: 100%;
-  margin: 0 0 20px 0;
+  margin: 0 0 5px 0;
   padding: 15px;
   box-sizing: border-box;
   border: none;
@@ -141,6 +141,22 @@
 
 .login__sign-up-link:hover {
   opacity: 0.7;
+}
+
+.login__error-info {
+  align-self: flex-start;
+  color: #EE3465;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  margin: 0 0 5px 0;
+  opacity: 0;
+  padding: 0;
+  height: 12px;
+}
+
+.login__error-info_active {
+  opacity: 1;
 }
 
 @media screen and (max-width: 1279px) {

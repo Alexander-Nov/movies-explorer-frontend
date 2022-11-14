@@ -10,7 +10,16 @@ class MainApi {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    // return Promise.reject(`Ошибка: ${res.status}`);
+    // console.log(res.text);
+    return res.text()
+    .then ((text) => {
+      throw new Error(text)
+      // console.log(text);
+      // Promise.reject({status: res.status, text})
+    }
+    );
+    // return Promise.reject(res.statusText);
   }
 
   postNewMovie(newMovieData) {

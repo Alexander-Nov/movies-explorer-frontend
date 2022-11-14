@@ -1,24 +1,38 @@
 import React from "react";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import Header from "../Header/Header.js";
+import { useForm } from 'react-hook-form';
 
 function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdateUser, onSignOut }) {
-  const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
+
   const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
+  const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
   const currentUser = React.useContext(CurrentUserContext);
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
+
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({mode:"onChange", defaultValues: { name: currentUser.name, email: currentUser.email}});
+
+    // useEffect(() => {
+    //     reset(currentUser)
+    // }, [currentUser])
+
+  // const [name, setName] = React.useState("");
+  // const [email, setEmail] = React.useState("");
 
 
-  function handleChangeName(e) {
-    e.preventDefault();
-    setName(e.target.value);
-  }
+  // function handleChangeName(e) {
+  //   e.preventDefault();
+  //   setName(e.target.value);
+  // }
 
-  function handleChangeEmail(e) {
-    e.preventDefault();
-    setEmail(e.target.value);
-  }
+  // function handleChangeEmail(e) {
+  //   e.preventDefault();
+  //   setEmail(e.target.value);
+  // }
 
   function handleEnableReduction(e) {
     e.preventDefault();
@@ -31,22 +45,33 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
     onSignOut();
   }
 
-  function handleSaveProfileData(e) {
-    e.preventDefault();
-     onUpdateUser({
-      name,
-      email
-    });
-    setIsReductionMode(false);
-    setIsDisabled(true);
+  const onSubmit = (data) => {
+    if ((data.name !== currentUser.name) || (data.email !== currentUser.email)) {
+        onUpdateUser({ name: data.name, email: data.email });
+        setIsReductionMode(false);
+        setIsDisabled(true);
+        // setErrorMessage("Ваши данные уcпешно сохранены")
+    } else {
+        // setErrorMessage("Вы не изменили свои данные. Сохранение отменено")
+    }
+}
 
-    // тут будет логика сохранения данных
-  }
+  // function handleSaveProfileData(e) {
+  //   e.preventDefault();
+  //    onUpdateUser({
+  //     name,
+  //     email
+  //   });
+  //   setIsReductionMode(false);
+  //   setIsDisabled(true);
 
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-  }, [currentUser]);
+  //   // тут будет логика сохранения данных
+  // }
+
+  // React.useEffect(() => {
+  //   setName(currentUser.name);
+  //   setEmail(currentUser.email);
+  // }, [currentUser]);
 
   return (
     <section className="profile">
@@ -55,8 +80,8 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
         isMobileMenuOpened={isMobileMenuOpened}
         setIsMobileMenuOpened={setIsMobileMenuOpened}
       />
-      <form className="profile__form">
-        <h1 className="profile__title">{`Привет, ${name}!`}</h1>
+      <form className="profile__form" onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
         <fieldset className="profile__fieldset">
           <div className="profile__input-line">
             <label className="profile__label" htmlFor="name">
@@ -64,16 +89,26 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
             </label>
             <input
               className="profile__input profile__input-name"
+              {...register("name", {
+                minLength: {
+                    value: 2,
+                    message: "Имя должно содержать не менее 2 знаков"},
+                maxLength: {
+                    value: 30,
+                    message: "Имя должно содержать не более 30 знаков"
+                },
+                pattern: {
+                    value: /^[A-Za-zА-Яа-я ]+$/,
+                    message: "Поле Имя заполнено некорректно"
+                },
+                required: "Поле Имя должно быть заполнено"
+              })}
               id="name"
-              name="name"
               type="text"
-              value={name || ""}
-              onChange={handleChangeName}
-              required
-              minLength="2"
               disabled={isDisabled}
             />
           </div>
+          <span className={`profile__error-info${errors.name ? " profile__error-info_active" : ""}`}>{errors.name ? errors.name.message : ""}</span>
 
           <div className="profile__input-line">
             <label className="profile__label" htmlFor="email">
@@ -81,16 +116,19 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
             </label>
             <input
               className="profile__input profile__input-email"
+              {...register('email', {
+                pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i ,
+                    message: "Поле Email заполнено некорректно"
+                },
+                required: "Поле Email должно быть заполнено"
+              })}
               id="email"
-              name="email"
-              type="text"
-              value={email || ""}
-              onChange={handleChangeEmail}
-              required
-              minLength="2"
+              type="email"
               disabled={isDisabled}
             />
           </div>
+          <span className={`profile__error-info${errors.email ? " profile__error-info_active" : ""}`}>{errors.email ? errors.email.message : ""}</span>
 
           <section className="profile__button-area">
             {!isReductionMode ? (
@@ -108,10 +146,10 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
             ) : (
               <button
                 className={`profile__save-button${
-                  isDisabled ? " profile__save-button_disabled" : ""
+                  !isValid ? " profile__save-button_disabled" : ""
                 }`}
                 disabled={isDisabled}
-                onClick={handleSaveProfileData}
+                type="submit"
               >
                 Сохранить
               </button>

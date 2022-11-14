@@ -1,31 +1,45 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 import logoPath from "../../images/header-logo.svg";
 
-function Login ({ onEnterUser }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [isDisabled, setIsDisabled] = React.useState(false);
+function Login ({ onEnterUser, isInputDisabled }) {
+
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({mode:"onChange"});
+
+  // const [email, setEmail] = React.useState("");
+  // const [password, setPassword] = React.useState("");
+  // const [isDisabled, setIsDisabled] = React.useState(false);
 
 
-  function handleChangeEmail(e) {
-    e.preventDefault();
-    setEmail(e.target.value);
-  }
+  // function handleChangeEmail(e) {
+  //   e.preventDefault();
+  //   setEmail(e.target.value);
+  // }
 
-  function handleChangePassword(e) {
-    e.preventDefault();
-    setPassword(e.target.value);
-  }
+  // function handleChangePassword(e) {
+  //   e.preventDefault();
+  //   setPassword(e.target.value);
+  // }
 
-  function handleSignIn(e) {
-    e.preventDefault();
-    onEnterUser({
-      email,
-      password,
-    });
-    // setIsDisabled(false);
-  }
+  // function handleSignIn(e) {
+  //   e.preventDefault();
+  //   onEnterUser({
+  //     email,
+  //     password,
+  //   });
+  //   // setIsDisabled(false);
+  // }
+
+  const onSubmit = (data) => {
+    onEnterUser({ email: data.email, password: data.password });
+    reset();
+}
 
   return (
     <section className="login">
@@ -38,7 +52,7 @@ function Login ({ onEnterUser }) {
         />
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
-        <form className="login__form">
+        <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="login__fieldset">
 
             <label className="login__label" htmlFor="email">
@@ -46,32 +60,45 @@ function Login ({ onEnterUser }) {
             </label>
             <input
               className="login__input login__input-email"
+              {...register('email', {
+                pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i ,
+                    message: "Поле Email заполнено некорректно"
+                },
+                required: "Поле Email должно быть заполнено"
+            })}
               id="email"
-              name="email"
               type="email"
-              value={email}
-              onChange={handleChangeEmail}
-              required
-              minLength="2"
-              disabled={isDisabled}
+              disabled={isInputDisabled}
             />
+            <span className={`login__error-info${errors.email ? " login__error-info_active" : ""}`}>{errors.email ? errors.email.message : ""}</span>
 
             <label className="login__label" htmlFor="password">
               Пароль
             </label>
             <input
               className="login__input register__input-password"
+              {...register("password", {
+                minLength: {
+                    value: 2,
+                    message: "Пароль должен содержать не менее 2 знаков"},
+                maxLength: {
+                    value: 30,
+                    message: "Пароль должен содержать не более 30 знаков"
+                },
+                required: "Поле Пароль должно быть заполнено"
+            })}
               id="password"
-              name="password"
               type="password"
-              value={password}
-              onChange={handleChangePassword}
-              required
-              minLength="2"
-              disabled={isDisabled}
+              disabled={isInputDisabled}
             />
+            <span className={`login__error-info${errors.password ? " login__error-info_active" : ""}`}>{errors.password ? errors.password.message : ""}</span>
 
-            <button className={`login__button${isDisabled ? " login__button_disabled" : ""}`} onClick={handleSignIn} disabled={isDisabled}>
+            <button
+              className={`login__button${!isValid ? " login__button_disabled" : ""}`}
+              type="submit"
+              disabled={!isValid}
+            >
               Войти
             </button>
 

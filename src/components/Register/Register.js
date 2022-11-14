@@ -1,37 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 import logoPath from "../../images/header-logo.svg";
 
-function Register({ onAddUser }) {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [isDisabled, setIsDisabled] = React.useState(false);
+function Register({ onAddUser, isInputDisabled }) {
 
-  function handleChangeName(e) {
-    e.preventDefault();
-    setName(e.target.value);
-  }
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({mode:"onChange"});
 
-  function handleChangeEmail(e) {
-    e.preventDefault();
-    setEmail(e.target.value);
-  }
-
-  function handleChangePassword(e) {
-    e.preventDefault();
-    setPassword(e.target.value);
-  }
-
-  function handleSignUp(e) {
-    e.preventDefault();
-    onAddUser({
-      name,
-      email,
-      password
-    });
-    // setIsDisabled(false);
-  }
+  const onSubmit = (data) => {
+    onAddUser({ name: data.name, email: data.email, password: data.password });
+    reset();
+  };
 
   return (
     <section className="register">
@@ -44,59 +28,79 @@ function Register({ onAddUser }) {
           />
         </Link>
         <h1 className="register__title">Добро пожаловать!</h1>
-        <form className="register__form">
+        <form className="register__form" onSubmit={handleSubmit(onSubmit)}>
           <fieldset className="register__fieldset">
             <label className="register__label" htmlFor="name">
               Имя
             </label>
             <input
               className="register__input register__input-name"
+              {...register("name", {
+                minLength: {
+                  value: 2,
+                  message: "Имя должно содержать не менее 2 знаков"},
+                maxLength: {
+                  value: 30,
+                  message: "Имя должно содержать не более 30 знаков"
+                },
+                pattern: {
+                  value: /^[A-Za-zА-Яа-я ]+$/,
+                  message: "Поле Имя заполнено некорректно"
+                },
+                required: "Поле Имя должно быть заполнено"
+            })}
               id="name"
-              name="name"
               type="text"
-              value={name}
-              onChange={handleChangeName}
-              required
-              minLength="2"
-              disabled={isDisabled}
+              disabled={isInputDisabled}
             />
+            <span className={`register__error-info${errors.name ? " register__error-info_active" : ""}`}>{errors.name ? errors.name.message : ""}</span>
 
             <label className="register__label" htmlFor="email">
               E-mail
             </label>
             <input
               className="register__input register__input-email"
+              {...register('email', {
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i ,
+                  message: "Поле Email заполнено некорректно"
+                },
+                required: "Поле Email должно быть заполнено"
+            })}
               id="email"
-              name="email"
               type="email"
-              value={email}
-              onChange={handleChangeEmail}
-              required
-              minLength="2"
-              disabled={isDisabled}
+              disabled={isInputDisabled}
             />
+            <span className={`register__error-info${errors.email ? " register__error-info_active" : ""}`}>{errors.email ? errors.email.message : ""}</span>
 
             <label className="register__label" htmlFor="password">
               Пароль
             </label>
             <input
               className="register__input register__input-password"
-              id="password"
+              {...register("password", {
+                minLength: {
+                  value: 2,
+                  message: "Пароль должен содержать не менее 2 знаков"},
+                maxLength: {
+                  value: 30,
+                  message: "Пароль должен содержать не более 30 знаков"
+                },
+                required: "Поле Пароль должно быть заполнено"
+            })}
+            id="password"
               name="password"
               type="password"
-              value={password}
-              onChange={handleChangePassword}
-              required
-              minLength="2"
-              disabled={isDisabled}
+              disabled={isInputDisabled}
             />
+            <span className={`register__error-info${errors.password ? " register__error-info_active" : ""}`}>{errors.password ? errors.password.message : ""}</span>
 
             <button
               className={`register__button${
-                isDisabled ? " register__button_disabled" : ""
+                !isValid ? " register__button_disabled" : ""
               }`}
-              onClick={handleSignUp}
-              disabled={isDisabled}
+              type="submit"
+              disabled={!isValid}
             >
               Зарегистрироваться
             </button>

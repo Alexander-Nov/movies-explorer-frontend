@@ -14,7 +14,9 @@ import Page404 from "../Page404/Page404.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
-import { DESKTOP, TABLET, MOBILE } from '../../utils/constants';
+// import { DESKTOP, TABLET, MOBILE } from '../../utils/constants';
+import InfoTooltipPopup from "../InfoTooltipPopup/InfoTooltipPopup";
+import * as constants from "../../utils/constants";
 
 function App() {
   let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
@@ -25,7 +27,9 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]); // массив фильмов для страницы сохраненных фильмов
   const [filteredMovies, setFilteredMovies] = React.useState([]); // массив фильмов по результатам поиска
   const [isRegistered, setIsRegistered] = React.useState(false);
-  const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("");
+  const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("Начальное сообщение - потом удалить");
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+  const [isResultSuccess, setIsResultSuccess] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(
     localStorage.getItem("token") ? true : false
   );
@@ -41,6 +45,7 @@ function App() {
   const baseUrl = "https://api.nomoreparties.co";
   const history = useHistory();
   const [movieArrayFromLocalStorage, setMovieArrayFromLocalStorage] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
+  const [isInputDisabled, setIsInputDisabled] = React.useState(false);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");
@@ -70,15 +75,15 @@ function App() {
 }, [])
 
   React.useEffect(() => {
-    if (currentWidth >= DESKTOP.width) {
-      setRenderedMoviesQuantity(DESKTOP.startingCount);
-      setMoreMoviesQuantity(DESKTOP.moreCount);
-    } else if (currentWidth <= TABLET.width) {
-      setRenderedMoviesQuantity(MOBILE.startingCount);
-      setMoreMoviesQuantity(MOBILE.moreCount);
+    if (currentWidth >= constants.DESKTOP.width) {
+      setRenderedMoviesQuantity(constants.DESKTOP.startingCount);
+      setMoreMoviesQuantity(constants.DESKTOP.moreCount);
+    } else if (currentWidth <= constants.TABLET.width) {
+      setRenderedMoviesQuantity(constants.MOBILE.startingCount);
+      setMoreMoviesQuantity(constants.MOBILE.moreCount);
     } else {
-      setRenderedMoviesQuantity(TABLET.startingCount);
-      setMoreMoviesQuantity(TABLET.moreCount);
+      setRenderedMoviesQuantity(constants.TABLET.startingCount);
+      setMoreMoviesQuantity(constants.TABLET.moreCount);
     }
   }, [currentWidth]);
 
@@ -100,6 +105,8 @@ function App() {
           // }
         })
         .catch((err) => {
+          setInfoTooltipMessage(constants,constants.commonServerError);
+          setIsPopupOpen(true);
           console.log(err);
         })
         .finally(() => {
@@ -171,8 +178,8 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        //   setInfoTooltipMessage(`Ошибка создания карточки: ${err}`);
-        // setIsInfoTooltipOpen(true);
+        setInfoTooltipMessage(`Ошибка создания карточки: ${err}`);
+        setIsPopupOpen(true);
       })
       .finally(() => {
         // setIsLoading(false);
@@ -225,6 +232,11 @@ function App() {
       });
   }
 
+  const onPopupClose = () => {
+    setInfoTooltipMessage("");
+    setIsPopupOpen(false);
+  };
+
   const handleSignInSubmit = ({ email, password }) => {
     // setIsLoading(true);
     mainApi
@@ -252,25 +264,29 @@ function App() {
         setInfoTooltipMessage(
           `Ошибка входа: ${err}. Проверьте вводимые данные и попробуйте еще раз.`
         );
-        // setIsInfoTooltipOpen(true);
+        setIsPopupOpen(true);
       });
   };
 
   const handleRegisterSubmit = ({ name, email, password }) => {
     const pass = password;
     // setIsLoading(true);
+    setIsInputDisabled(true);
     mainApi
       .register(name, email, password)
       .then((res) => {
-        if (res.message) {
-          setInfoTooltipMessage(`Ошибка при регистрации: ${res.message}`);
-        } else {
+        // setInfoTooltipMessage(res);
+        // console.log(res);
+        // if (res.message) {
+        //   setInfoTooltipMessage(`Ошибка при регистрации: ${message}`);
+        //   setIsPopupOpen(true);
+        // } else {
           // console.log(res.email);
           handleSignInSubmit({
             email: res.email,
             password: pass,
           });
-        }
+        // }
         // setIsRegistered(true);
         // setInfoTooltipMessage("Вы успешно зарегистрировались!");
         // setIsInfoTooltipOpen(true);
@@ -279,11 +295,13 @@ function App() {
       })
       .catch((err) => {
         setInfoTooltipMessage(`Ошибка при регистрации: ${err}`);
-        // setIsInfoTooltipOpen(true);
+        setIsPopupOpen(true);
         // setIsLoading(false);
       })
       .finally((res) => {
         // добавить потом снятие прелоадера
+        setIsLoading(false);
+        setIsInputDisabled(false);
       });
   };
 
@@ -341,11 +359,17 @@ function App() {
             </Route>
 
             <Route path="/signup">
-              <Register onAddUser={handleRegisterSubmit} />
+              <Register
+                onAddUser={handleRegisterSubmit}
+                isInputDisabled={isInputDisabled}
+              />
             </Route>
 
             <Route path="/signin">
-              <Login onEnterUser={handleSignInSubmit} />
+              <Login
+                onEnterUser={handleSignInSubmit}
+                isInputDisabled={isInputDisabled}
+              />
             </Route>
 
             <ProtectedRoute
@@ -406,6 +430,12 @@ function App() {
               <Page404 />
             </Route>
           </Switch>
+          <InfoTooltipPopup
+            isPopupOpen={isPopupOpen}
+            messageText={infoTooltipMessage}
+            isResultSuccess={isResultSuccess}
+            onClose={onPopupClose}
+          />
         </main>
       </MovieContext.Provider>
     </CurrentUserContext.Provider>
