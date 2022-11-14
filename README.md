@@ -12,6 +12,9 @@ URL страницы: https://diplom.novoselov.nomorepartiesxyz.ru
 
 API-сервер: https://api.diplom.novoselov.nomorepartiesxyz.ru
 
+Ссылка на макет: https://disk.yandex.ru/d/yCzCnCHlERPOQA
+
+
 ## Запуск проекта
 
 `npm start` - Runs the app in the development mode.\
