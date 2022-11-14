@@ -1,11 +1,19 @@
 import React from 'react';
 import Checkbox from '../Checkbox/Checkbox';
 
-function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilmsOnlyStatus, setShortFilmsOnlyStatus, setSearchStringIsMissed })  {
+function SearchForm ({
+  setMovieIsFound,
+  onSearch,
+  lastSearchingString,
+  shortFilmsOnlyStatus,
+  setShortFilmsOnlyStatus,
+  setSearchStringIsMissed,
+  isSavedMoviesPage,
+})  {
 
   let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
-  const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString);
-  const [isSerchingStarted, setIsSerchingStarted] = React.useState(moviesIsPresent ? true : false);
+  const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString ? lastSearchingString : "");
+  // const [isSerchingStarted, setIsSerchingStarted] = React.useState(moviesIsPresent ? true : false);
 
   function handleChangeMovieTitle(e) {
     e.preventDefault();
@@ -27,7 +35,9 @@ function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilm
   function handleChangeShortFilmsOnlyStatus() {
       setShortFilmsOnlyStatus(shortFilmsOnlyStatus ? false : true);
       if (searchingMovieTitle.length === 0) {
-        setSearchStringIsMissed(true);
+        if (!isSavedMoviesPage) {
+          setSearchStringIsMissed(true);
+        }
         setMovieIsFound(false);
       } else {
         setMovieIsFound(true);
@@ -36,7 +46,9 @@ function SearchForm ({ setMovieIsFound, onSearch, lastSearchingString, shortFilm
 
   function handleSearchMovies(e) {
     e.preventDefault();
-    if (searchingMovieTitle.length === 0) {
+    if (isSavedMoviesPage) {
+      onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+    } else if (searchingMovieTitle.length === 0) {
       setSearchStringIsMissed(true);
       setMovieIsFound(false);
     } else {

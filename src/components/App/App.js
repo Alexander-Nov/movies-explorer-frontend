@@ -26,6 +26,7 @@ function App() {
   const [movies, setMovies] = React.useState([]); // массив фильмов для основной страницы
   const [savedMovies, setSavedMovies] = React.useState([]); // массив фильмов для страницы сохраненных фильмов
   const [filteredMovies, setFilteredMovies] = React.useState([]); // массив фильмов по результатам поиска
+  const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]); // массив фильмов по результатам поиска на стр. сохраненных
   const [isRegistered, setIsRegistered] = React.useState(false);
   const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("Начальное сообщение - потом удалить");
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
@@ -149,10 +150,6 @@ function App() {
     setMoviesArrayForRender(
       movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
     );
-    // if (movieArrayAfterSearch.length > 0) {
-    //   console.log(movieArrayAfterSearch.length);
-    //   setMovieIsFound(true);
-    // }
     localStorage.setItem("movieArrayAfterSearch", JSON.stringify(movieArrayAfterSearch));
     localStorage.setItem("stringToSearch", stringToSearch);
     localStorage.setItem("shortMovieOnly", shortMovieOnly ? shortMovieOnly : "");
@@ -163,6 +160,27 @@ function App() {
     const newMaxMoviesQuantity = moviesArrayForRender.length + moreMoviesQuantity;
     setMoviesArrayForRender(filteredMovies.slice(0, newMaxMoviesQuantity));
     localStorage.setItem("renderedMoviesQuantity", newMaxMoviesQuantity);
+  };
+
+  const handleFindSavedMovies = (stringToSearch, shortMovieOnly) => {
+    // setIsLoading(true);
+    // setLastSearchingString(stringToSearch);
+
+    const movieArrayAfterSearch = savedMovies.filter((item) => {
+      return shortMovieOnly
+        ? ((item.duration <= 40 &&
+            item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase())) ||
+            (item.duration <= 40 &&
+            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase())))
+        : (item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase()) ||
+            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()));
+    });
+    setFilteredSavedMovies(movieArrayAfterSearch);
+    // setMoviesArrayForRender(
+    //   movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
+    // );
+
+    // setIsLoading(false);
   };
 
   const handleLikeClick = (newMovie) => {
@@ -198,12 +216,6 @@ function App() {
     // setIsLoading(true);
     mainApi
       .deleteMovie(deletingMovie)
-      // .then(() => {
-      //   setCards((state) => state.filter((c) => !(c._id === card._id)));
-      // })
-      // .then(() => {
-      //   closeAllPopups();
-      // })
       .catch((err) => {
         console.log(err);
       })
@@ -213,7 +225,6 @@ function App() {
   }
 
   function handleDislikeClickFromSaved(movie) {
-    // console.log(movie._id);
     const deletingMovie = findMovieForDelete(movie._id);
     // setIsLoading(true);
     mainApi
@@ -275,23 +286,10 @@ function App() {
     mainApi
       .register(name, email, password)
       .then((res) => {
-        // setInfoTooltipMessage(res);
-        // console.log(res);
-        // if (res.message) {
-        //   setInfoTooltipMessage(`Ошибка при регистрации: ${message}`);
-        //   setIsPopupOpen(true);
-        // } else {
-          // console.log(res.email);
           handleSignInSubmit({
             email: res.email,
             password: pass,
           });
-        // }
-        // setIsRegistered(true);
-        // setInfoTooltipMessage("Вы успешно зарегистрировались!");
-        // setIsInfoTooltipOpen(true);
-        // history.push("/signin");
-        // setIsLoading(false);
       })
       .catch((err) => {
         setInfoTooltipMessage(`Ошибка при регистрации: ${err}`);
@@ -311,9 +309,6 @@ function App() {
       .setUserInfo(newUserData)
       .then((res) => {
         setCurrentUser(res);
-        // setUserName(res.name);
-        // setUserEmail(res.email);
-        // closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
@@ -408,12 +403,16 @@ function App() {
               setIsMobileMenuOpened={setIsMobileMenuOpened}
               isLoading={isLoading}
               movieIsFound={movieIsFound}
+              setMovieIsFound={setMovieIsFound}
               savedMovies={savedMovies}
               setSavedMovies={setSavedMovies}
-              movieList={savedMovies}
+              setFilteredSavedMovies={setFilteredSavedMovies}
+              // movieList={savedMovies}
+              movieList={filteredSavedMovies}
               baseUrl={baseUrl}
               onLike={handleLikeClick}
               onDislike={handleDislikeClickFromSaved}
+              onSearch={handleFindSavedMovies}
             ></ProtectedRoute>
 
             <ProtectedRoute

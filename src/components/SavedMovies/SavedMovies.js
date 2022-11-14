@@ -11,20 +11,26 @@ function SavedMovies({
   setIsMobileMenuOpened,
   isLoading,
   movieIsFound,
+  setMovieIsFound,
   movieList,
   savedMovies,
   setSavedMovies,
+  setFilteredSavedMovies,
   baseUrl,
   onLike,
   onDislike,
+  onSearch,
 }) {
   // const { moviesCards, savedMovies } = React.useContext(MovieContext);
+  const [shortSavedFilmsOnlyStatus, setShortSavedFilmsOnlyStatus] = React.useState(false);
 
   React.useEffect(() => {
+    mainApi.updateToken();
     mainApi
       .getMovies()
       .then((resMovies) => {
         setSavedMovies(resMovies);
+        setFilteredSavedMovies(resMovies);
         // console.log(resMovies);
       })
       .catch((err) => {
@@ -45,9 +51,16 @@ function SavedMovies({
         isMobileMenuOpened={isMobileMenuOpened}
         setIsMobileMenuOpened={setIsMobileMenuOpened}
       />
-      <SearchForm />
+      <SearchForm
+        setMovieIsFound={setMovieIsFound}
+        onSearch={onSearch}
+        isSavedMoviesPage="true"
+        shortFilmsOnlyStatus={shortSavedFilmsOnlyStatus}
+        setShortFilmsOnlyStatus={setShortSavedFilmsOnlyStatus}
+      />
       <MoviesCardList
-        movieList={savedMovies}
+        // movieList={savedMovies}
+        movieList={movieList}
         savedMovies={savedMovies}
         baseUrl={baseUrl}
         onLike={onLike}
