@@ -3,7 +3,7 @@ import { CurrentUserContext } from "../../contexts/currentUserContext";
 import Header from "../Header/Header.js";
 import { useForm } from 'react-hook-form';
 
-function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdateUser, onSignOut }) {
+function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdateUser, onSignOut, setInfoTooltipMessage, setIsPopupOpen, setIsResultSuccess }) {
 
   const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
   const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
@@ -11,7 +11,7 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty,},
     handleSubmit,
     reset,
   } = useForm({mode:"onChange", defaultValues: { name: currentUser.name, email: currentUser.email}});
@@ -47,31 +47,17 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
 
   const onSubmit = (data) => {
     if ((data.name !== currentUser.name) || (data.email !== currentUser.email)) {
-        onUpdateUser({ name: data.name, email: data.email });
-        setIsReductionMode(false);
-        setIsDisabled(true);
-        // setErrorMessage("Ваши данные уcпешно сохранены")
+      onUpdateUser({ name: data.name, email: data.email });
+      setIsReductionMode(false);
+      setIsDisabled(true);
+      setIsResultSuccess(true);
+      setInfoTooltipMessage("Новые данные успешно сохранены");
+      setIsPopupOpen(true);
     } else {
-        // setErrorMessage("Вы не изменили свои данные. Сохранение отменено")
+      setInfoTooltipMessage("Изменение данных не обнаружено");
+      setIsPopupOpen(true);
     }
 }
-
-  // function handleSaveProfileData(e) {
-  //   e.preventDefault();
-  //    onUpdateUser({
-  //     name,
-  //     email
-  //   });
-  //   setIsReductionMode(false);
-  //   setIsDisabled(true);
-
-  //   // тут будет логика сохранения данных
-  // }
-
-  // React.useEffect(() => {
-  //   setName(currentUser.name);
-  //   setEmail(currentUser.email);
-  // }, [currentUser]);
 
   return (
     <section className="profile">
@@ -146,10 +132,10 @@ function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdate
             ) : (
               <button
                 className={`profile__save-button${
-                  !isValid ? " profile__save-button_disabled" : ""
+                  (!isValid || !isDirty) ? " profile__save-button_disabled" : ""
                 }`}
-                disabled={isDisabled}
                 type="submit"
+                disabled={!isValid || !isDirty}
               >
                 Сохранить
               </button>

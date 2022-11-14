@@ -423,6 +423,9 @@ function App() {
               setIsMobileMenuOpened={setIsMobileMenuOpened}
               onUpdateUser={handleUpdateUser}
               onSignOut={handleSignOut}
+              setInfoTooltipMessage={setInfoTooltipMessage}
+              setIsPopupOpen={setIsPopupOpen}
+              setIsResultSuccess={setIsResultSuccess}
             ></ProtectedRoute>
 
             <Route path="*">
