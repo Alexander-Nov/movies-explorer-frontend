@@ -8,10 +8,6 @@ function Checkbox({ isChecked, onCheckboxClick }) {
     onCheckboxClick();
   };
 
-  // React.useEffect(() => {
-  //   console.log(`isChecked = ${isChecked}`);
-  // }, [isChecked])
-
   return (
     <div className="checkbox-group">
       <button className="checkbox-group__button" onClick={handleCheckboxClick}>

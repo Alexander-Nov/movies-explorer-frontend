@@ -12,30 +12,6 @@ function Login ({ onEnterUser, isInputDisabled }) {
     reset,
   } = useForm({mode:"onChange"});
 
-  // const [email, setEmail] = React.useState("");
-  // const [password, setPassword] = React.useState("");
-  // const [isDisabled, setIsDisabled] = React.useState(false);
-
-
-  // function handleChangeEmail(e) {
-  //   e.preventDefault();
-  //   setEmail(e.target.value);
-  // }
-
-  // function handleChangePassword(e) {
-  //   e.preventDefault();
-  //   setPassword(e.target.value);
-  // }
-
-  // function handleSignIn(e) {
-  //   e.preventDefault();
-  //   onEnterUser({
-  //     email,
-  //     password,
-  //   });
-  //   // setIsDisabled(false);
-  // }
-
   const onSubmit = (data) => {
     onEnterUser({ email: data.email, password: data.password });
     reset();

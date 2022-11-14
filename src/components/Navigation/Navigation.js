@@ -8,7 +8,7 @@ function Navigation({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened }) {
   }
 
   return (
-    <div className="navigation">
+    <section className="navigation">
       <Route path="/movies">
         <div className="navigation__link-block">
           <Link
@@ -143,7 +143,7 @@ function Navigation({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened }) {
               </>
         )}
       </Route>
-    </div>
+    </section>
   );
 }
 

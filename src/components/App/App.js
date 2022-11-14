@@ -14,7 +14,6 @@ import Page404 from "../Page404/Page404.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
-// import { DESKTOP, TABLET, MOBILE } from '../../utils/constants';
 import InfoTooltipPopup from "../InfoTooltipPopup/InfoTooltipPopup";
 import * as constants from "../../utils/constants";
 
@@ -27,7 +26,6 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]); // массив фильмов для страницы сохраненных фильмов
   const [filteredMovies, setFilteredMovies] = React.useState([]); // массив фильмов по результатам поиска
   const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]); // массив фильмов по результатам поиска на стр. сохраненных
-  const [isRegistered, setIsRegistered] = React.useState(false);
   const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("Начальное сообщение - потом удалить");
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [isResultSuccess, setIsResultSuccess] = React.useState(false);
@@ -41,7 +39,6 @@ function App() {
   const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(localStorage.getItem("stringToSearch") ? true : false);
   const [lastSearchingString, setLastSearchingString] = React.useState(localStorage.getItem("stringToSearch") || "");
   const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(Boolean(localStorage.getItem("shortMovieOnly")));
-  // const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(false);
   const [currentWidth, setCurrentWidth] = React.useState(window.innerWidth);
   const baseUrl = "https://api.nomoreparties.co";
   const history = useHistory();
@@ -96,14 +93,9 @@ function App() {
       moviesApi
         .getMovies()
         .then((resMovies) => {
-          // let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")).length > 0);
           setMovies(resMovies);
           setMoviesArrayForRender(JSON.parse(localStorage.getItem("movieArrayAfterSearch")) || []);
           setLastSearchingString(localStorage.getItem("stringToSearch") || "");
-          // setShortFilmsOnlyStatus(Boolean(localStorage.getItem("shortMovieOnly")));
-          // if (moviesIsPresent) {
-          //   setMovieIsFound(true);
-          // }
         })
         .catch((err) => {
           setInfoTooltipMessage(constants,constants.commonServerError);
@@ -111,7 +103,6 @@ function App() {
           console.log(err);
         })
         .finally(() => {
-          // localStorage.setItem('allMovies', JSON.stringify(movies)); //записываем сохраненные фильмы в локалсторейдж
           setIsLoading(false);
         });
     }
@@ -120,18 +111,6 @@ function App() {
   React.useEffect(() => {
     setAllMoviesAreShown(moviesArrayForRender.length === filteredMovies.length);
   }, [moviesArrayForRender]);
-
-  // React.useEffect(() => {
-  //   handleFindMovies(lastSearchingString, shortFilmsOnlyStatus);
-  // }, [shortFilmsOnlyStatus]);
-
-  // React.useEffect(() => {
-  //   if (filteredMovies.length > 0) {
-  //     setMovieIsFound(true);
-  //   } else {
-  //     setMovieIsFound(false);
-  //   }
-  // }, [filteredMovies]);
 
   const handleFindMovies = (stringToSearch, shortMovieOnly) => {
     setIsLoading(true);
@@ -163,9 +142,6 @@ function App() {
   };
 
   const handleFindSavedMovies = (stringToSearch, shortMovieOnly) => {
-    // setIsLoading(true);
-    // setLastSearchingString(stringToSearch);
-
     const movieArrayAfterSearch = savedMovies.filter((item) => {
       return shortMovieOnly
         ? ((item.duration <= 40 &&
@@ -176,31 +152,19 @@ function App() {
             item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()));
     });
     setFilteredSavedMovies(movieArrayAfterSearch);
-    // setMoviesArrayForRender(
-    //   movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
-    // );
-
-    // setIsLoading(false);
   };
 
   const handleLikeClick = (newMovie) => {
-    // setIsLoading(true);
     mainApi
       .postNewMovie(newMovie) //записываем фильм в нашу БД
       .then((movie) => {
         const newSavedMovies = [movie, ...savedMovies];
         setSavedMovies(newSavedMovies); //сохраняем в локальный стейт
-        // setSavedMovies([movie, ...savedMovies]);
-        // localStorage.setItem("currentlySavedMovies", newSavedMovies); //записываем сохраненные фильмы в локалсторейдж
-        // closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
         setInfoTooltipMessage(`Ошибка создания карточки: ${err}`);
         setIsPopupOpen(true);
-      })
-      .finally(() => {
-        // setIsLoading(false);
       });
   };
 
@@ -213,33 +177,23 @@ function App() {
 
   function handleDislikeClick(movie) {
     const deletingMovie = findMovieForDelete(movie);
-    // setIsLoading(true);
     mainApi
       .deleteMovie(deletingMovie)
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        // setIsLoading(false);
       });
   }
 
   function handleDislikeClickFromSaved(movie) {
     const deletingMovie = findMovieForDelete(movie._id);
-    // setIsLoading(true);
     mainApi
       .deleteMovie(movie)
       .then(() => {
         setSavedMovies((state) => state.filter((m) => m._id !== movie._id));
+        setFilteredSavedMovies((state) => state.filter((m) => m._id !== movie._id));
       })
-      // .then(() => {
-      //   closeAllPopups();
-      // })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        // setIsLoading(false);
       });
   }
 
@@ -249,7 +203,6 @@ function App() {
   };
 
   const handleSignInSubmit = ({ email, password }) => {
-    // setIsLoading(true);
     mainApi
       .signin(password, email)
       .then((data) => {
@@ -258,11 +211,7 @@ function App() {
             .checkToken(data.token)
             .then((res) => {
               setCurrentUser(res);
-              // setUserEmail(res.email);
-              // setUserName(res.name);
               setLoggedIn(true);
-              // history.push('/movies');
-              // setIsLoading(false);
             })
             .then(() => {
               history.push("/movies");
@@ -271,7 +220,6 @@ function App() {
       })
       .catch((err) => {
         setIsLoading(false);
-        // setIsRegistered(false);
         setInfoTooltipMessage(
           `Ошибка входа: ${err}. Проверьте вводимые данные и попробуйте еще раз.`
         );
@@ -281,7 +229,6 @@ function App() {
 
   const handleRegisterSubmit = ({ name, email, password }) => {
     const pass = password;
-    // setIsLoading(true);
     setIsInputDisabled(true);
     mainApi
       .register(name, email, password)
@@ -294,10 +241,8 @@ function App() {
       .catch((err) => {
         setInfoTooltipMessage(`Ошибка при регистрации: ${err}`);
         setIsPopupOpen(true);
-        // setIsLoading(false);
-      })
+       })
       .finally((res) => {
-        // добавить потом снятие прелоадера
         setIsLoading(false);
         setIsInputDisabled(false);
       });
@@ -320,7 +265,6 @@ function App() {
 
   const handleSignOut = () => {
     setLoggedIn(false);
-    // setIsMobileMenuVisible(false);
     setLastSearchingString("");
     setMoviesArrayForRender([]);
     setAllMoviesAreShown(true);
@@ -407,7 +351,6 @@ function App() {
               savedMovies={savedMovies}
               setSavedMovies={setSavedMovies}
               setFilteredSavedMovies={setFilteredSavedMovies}
-              // movieList={savedMovies}
               movieList={filteredSavedMovies}
               baseUrl={baseUrl}
               onLike={handleLikeClick}

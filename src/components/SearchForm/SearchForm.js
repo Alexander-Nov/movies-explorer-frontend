@@ -11,26 +11,12 @@ function SearchForm ({
   isSavedMoviesPage,
 })  {
 
-  let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
   const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString ? lastSearchingString : "");
-  // const [isSerchingStarted, setIsSerchingStarted] = React.useState(moviesIsPresent ? true : false);
 
   function handleChangeMovieTitle(e) {
     e.preventDefault();
     setSearchingMovieTitle(e.target.value);
   }
-
-  // function handleChangeShortFilmsOnlyStatus() {
-  //   if (isSerchingStarted) {
-  //     setShortFilmsOnlyStatus(shortFilmsOnlyStatus ? false : true);
-  //     if (searchingMovieTitle.length === 0) {
-  //       setSearchStringIsMissed(true);
-  //       setMovieIsFound(false);
-  //     } else {
-  //       setMovieIsFound(true);
-  //     }
-  //   }
-  // }
 
   function handleChangeShortFilmsOnlyStatus() {
       setShortFilmsOnlyStatus(shortFilmsOnlyStatus ? false : true);
@@ -54,14 +40,11 @@ function SearchForm ({
     } else {
       setMovieIsFound(true);
       onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
-      // setIsSerchingStarted(true);
     }
-
-    // (searchingMovieTitle.length === 0) ? setSearchStringIsMissed(true) : onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
   }
 
   return (
-    <div className="search">
+    <section className="search">
       <form className="search__form" onSubmit={handleSearchMovies}>
         <fieldset className="search__fieldset">
           <input
@@ -81,7 +64,7 @@ function SearchForm ({
         />
 
       </form>
-    </div>
+    </section>
   );
 }
 

@@ -21,7 +21,7 @@ function SavedMovies({
   onDislike,
   onSearch,
 }) {
-  // const { moviesCards, savedMovies } = React.useContext(MovieContext);
+
   const [shortSavedFilmsOnlyStatus, setShortSavedFilmsOnlyStatus] = React.useState(false);
 
   React.useEffect(() => {
@@ -31,18 +31,11 @@ function SavedMovies({
       .then((resMovies) => {
         setSavedMovies(resMovies);
         setFilteredSavedMovies(resMovies);
-        // console.log(resMovies);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  // React.useEffect(() => {
-  //   return () => {
-  //     setSavedMovies(JSON.parse(localStorage.getItem('currentlySavedMovies')));
-  //   };
-  // }, []);
 
   return (
     <section className="movies">
@@ -59,7 +52,6 @@ function SavedMovies({
         setShortFilmsOnlyStatus={setShortSavedFilmsOnlyStatus}
       />
       <MoviesCardList
-        // movieList={savedMovies}
         movieList={movieList}
         savedMovies={savedMovies}
         baseUrl={baseUrl}

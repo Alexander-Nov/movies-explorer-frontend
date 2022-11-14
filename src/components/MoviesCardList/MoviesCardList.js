@@ -1,10 +1,9 @@
 import React from 'react';
-// import { Route, Switch, useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 
-function MoviesCardList ({ movieList, savedMovies, setSavedMovies, baseUrl, onLike, onDislike, shortFilmsOnlyStatus }) {
+function MoviesCardList ({ movieList, savedMovies, baseUrl, onLike, onDislike }) {
 
   const currentUser = React.useContext(CurrentUserContext);
   const userLocationPath = useLocation().pathname;
@@ -24,7 +23,7 @@ function MoviesCardList ({ movieList, savedMovies, setSavedMovies, baseUrl, onLi
           if (movieItem.owner === currentUser._id) {
             return (
               <MoviesCard
-                key={movieItem._id} // key={userLocationPath === "/movies" ? movieItem.id : i} это из сохраненных
+                key={movieItem._id} // это из сохраненных
                 card={movieItem}
                 baseUrl={baseUrl}
                 onLike={onLike}
@@ -35,7 +34,7 @@ function MoviesCardList ({ movieList, savedMovies, setSavedMovies, baseUrl, onLi
         } else {
           return (
             <MoviesCard
-              key={movieItem.id} // key={movieItem.id || movieItem._id} это из БД Яндекса
+              key={movieItem.id} // это из БД Яндекса
               card={movieItem}
               baseUrl={baseUrl}
               onLike={onLike}

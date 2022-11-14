@@ -10,16 +10,11 @@ class MainApi {
     if (res.ok) {
       return res.json();
     }
-    // return Promise.reject(`Ошибка: ${res.status}`);
-    // console.log(res.text);
     return res.text()
     .then ((text) => {
       throw new Error(text)
-      // console.log(text);
-      // Promise.reject({status: res.status, text})
     }
     );
-    // return Promise.reject(res.statusText);
   }
 
   postNewMovie(newMovieData) {
@@ -72,14 +67,6 @@ class MainApi {
     });
   }
 
-  // getUserData() {
-  //   return fetch(`${this._baseUrl}/users/me`, {
-  //     headers: this._headers,
-  //   }).then((res) => {
-  //     return this._getResponseData(res);
-  //   });
-  // }
-
   setUserInfo(newData) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
@@ -113,35 +100,6 @@ class MainApi {
       return this._getResponseData(res);
     });
   }
-
-  // setUserInfo(newData) {
-  //   return fetch(`${this._baseUrl}/users/me`, {
-  //     method: "PATCH",
-  //     headers: this._headers,
-  //     body: JSON.stringify(newData),
-  //   }).then((res) => {
-  //     return this._getResponseData(res);
-  //   });
-  // }
-
-  // changeLikeCardStatus(cardId, isLiked) {
-  //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-  //     method: `${isLiked ? "PUT" : "DELETE"}`,
-  //     headers: this._headers,
-  //   }).then((res) => {
-  //     return this._getResponseData(res);
-  //   });
-  // }
-
-  // updateAvatar(newData) {
-  //   return fetch(`${this._baseUrl}/users/me/avatar`, {
-  //     method: "PATCH",
-  //     headers: this._headers,
-  //     body: JSON.stringify(newData),
-  //   }).then((res) => {
-  //     return this._getResponseData(res);
-  //   });
-  // }
 
   updateToken() {
     this._headers = {

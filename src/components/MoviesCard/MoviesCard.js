@@ -1,31 +1,23 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
-// import { MovieContext } from "../../contexts/MovieContext";
 
 function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
   const [isLiked, setIsLiked] = React.useState(false); // пока устанавливаем без связи с БД
   const filmDurationHours = Math.round(card.duration / 60);
   const filmDurationMinutes = card.duration % 60;
   const currentUser = React.useContext(CurrentUserContext);
-  // const { moviesCards, savedMovies } = React.useContext(MovieContext);
-  // let isSaved = false;
-  // let cardLikeButtonClassName = `card__heart${isLiked ? " card__heart_active" : ""}`;
 
   React.useEffect(() => {
     if (savedMovies) {
-      // isSaved = savedMovies.some(item => item.movieId === card.id);
       setIsLiked(savedMovies.some(item => (item.movieId === card.id) && (item.owner === currentUser._id)));
     }
-    // console.log(currentUser);
   }, []);
 
 
 
 
   function handleLikeClick() {
-    // console.log(card);
-    // isLiked = true;
     setIsLiked(true);
     onLike(
       {
@@ -45,15 +37,11 @@ function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
   }
 
   function handleDislikeClick() {
-    // console.log(isLiked);
     setIsLiked(false);
-    // isSaved = false;
-    // console.log(isLiked);
     onDislike(card);
   }
 
   function handleDislikeClickFromSaved() {
-    // console.log(card);
     onDislike(card);
   }
 
@@ -78,7 +66,7 @@ function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
 
         <Route path="/saved-movies">
           <button
-            className="card__delete-button" //card__delete-button_hidden
+            className="card__delete-button"
             type="button"
             onClick={handleDislikeClickFromSaved}
             aria-label="Удалить из избранного"

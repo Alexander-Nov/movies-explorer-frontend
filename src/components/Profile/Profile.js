@@ -5,34 +5,15 @@ import { useForm } from 'react-hook-form';
 
 function Profile({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened, onUpdateUser, onSignOut, setInfoTooltipMessage, setIsPopupOpen, setIsResultSuccess }) {
 
-  const [isReductionMode, setIsReductionMode] = React.useState(false); // true = две кнопки: Сохранить и выйти
-  const [isDisabled, setIsDisabled] = React.useState(true); // true = инпуты заблокированы
+  const [isReductionMode, setIsReductionMode] = React.useState(false); // если true = две кнопки: Сохранить и выйти
+  const [isDisabled, setIsDisabled] = React.useState(true); // если true = инпуты заблокированы
   const currentUser = React.useContext(CurrentUserContext);
 
   const {
     register,
     formState: { errors, isValid, isDirty,},
     handleSubmit,
-    reset,
   } = useForm({mode:"onChange", defaultValues: { name: currentUser.name, email: currentUser.email}});
-
-    // useEffect(() => {
-    //     reset(currentUser)
-    // }, [currentUser])
-
-  // const [name, setName] = React.useState("");
-  // const [email, setEmail] = React.useState("");
-
-
-  // function handleChangeName(e) {
-  //   e.preventDefault();
-  //   setName(e.target.value);
-  // }
-
-  // function handleChangeEmail(e) {
-  //   e.preventDefault();
-  //   setEmail(e.target.value);
-  // }
 
   function handleEnableReduction(e) {
     e.preventDefault();
