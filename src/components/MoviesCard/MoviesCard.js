@@ -18,7 +18,6 @@ function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
 
 
   function handleLikeClick() {
-    setIsLiked(true);
     onLike(
       {
         "country": card.country,
@@ -34,6 +33,7 @@ function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
         "movieId": card.id
       }
   );
+    setIsLiked(true);
   }
 
   function handleDislikeClick() {

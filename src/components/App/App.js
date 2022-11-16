@@ -24,7 +24,7 @@ function App() {
   const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
   const [movies, setMovies] = React.useState([]); // массив фильмов для основной страницы
   const [savedMovies, setSavedMovies] = React.useState([]); // массив фильмов для страницы сохраненных фильмов
-  const [filteredMovies, setFilteredMovies] = React.useState([]); // массив фильмов по результатам поиска
+  const [filteredMovies, setFilteredMovies] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")) || []); // массив фильмов по результатам поиска
   const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]); // массив фильмов по результатам поиска на стр. сохраненных
   const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("Начальное сообщение - потом удалить");
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
@@ -33,17 +33,19 @@ function App() {
     localStorage.getItem("token") ? true : false
   );
   const [currentUser, setCurrentUser] = React.useState({});
-  const [moviesArrayForRender, setMoviesArrayForRender] = React.useState([]);
+  const [moviesArrayForRender, setMoviesArrayForRender] = React.useState(JSON.parse(localStorage.getItem("moviesArrayForRender")) || []);
   const [renderedMoviesQuantity, setRenderedMoviesQuantity] = React.useState(12);
   const [moreMoviesQuantity, setMoreMoviesQuantity] = React.useState(3);
-  const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(localStorage.getItem("stringToSearch") ? true : false);
+  // const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(localStorage.getItem("allMoviesAreShown") ? true : false);
+  const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(true);
   const [lastSearchingString, setLastSearchingString] = React.useState(localStorage.getItem("stringToSearch") || "");
   const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(Boolean(localStorage.getItem("shortMovieOnly")));
   const [currentWidth, setCurrentWidth] = React.useState(window.innerWidth);
   const baseUrl = "https://api.nomoreparties.co";
   const history = useHistory();
-  const [movieArrayFromLocalStorage, setMovieArrayFromLocalStorage] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
+  // const [movieArrayFromLocalStorage, setMovieArrayFromLocalStorage] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
   const [isInputDisabled, setIsInputDisabled] = React.useState(false);
+  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");
@@ -53,14 +55,21 @@ function App() {
         .then((res) => {
           setCurrentUser(res); //обновление данных пользователя в случае обновления страницы при наличии токена
           setLoggedIn(true);
-          history.push("/movies");
+
+
+          // history.push("/movies");
         })
         .catch((err) => {
           setLoggedIn(false);
+          // localStorage.removeItem("token");
+          // localStorage.removeItem("movieArrayAfterSearch");
+          // localStorage.removeItem("stringToSearch");
+          // localStorage.removeItem("shortMovieOnly");
+          // localStorage.removeItem("renderedMoviesQuantity")
           console.log(err);
         });
     }
-  }, [history]);
+  }, []);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -87,33 +96,39 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      setIsLoading(true);
+      // setIsLoading(true);
       mainApi.updateToken();
-
-      moviesApi
-        .getMovies()
-        .then((resMovies) => {
-          setMovies(resMovies);
-          setMoviesArrayForRender(JSON.parse(localStorage.getItem("movieArrayAfterSearch")) || []);
-          setLastSearchingString(localStorage.getItem("stringToSearch") || "");
-        })
-        .catch((err) => {
-          setInfoTooltipMessage(constants,constants.commonServerError);
-          setIsPopupOpen(true);
-          console.log(err);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      const localMovies = localStorage.getItem("films")
+      if (localMovies) {
+        setMovies(JSON.parse(localMovies))
+      } else {
+        moviesApi
+          .getMovies()
+          .then((resMovies) => {
+            setMovies(resMovies);
+            setMoviesArrayForRender(JSON.parse(localStorage.getItem("moviesArrayForRender")) || []);
+            setLastSearchingString(localStorage.getItem("stringToSearch") || "");
+          })
+          .catch((err) => {
+            setInfoTooltipMessage(constants,constants.commonServerError);
+            setIsPopupOpen(true);
+            console.log(err);
+          })
+          .finally(() => {
+            // setIsLoading(false);
+          });
+      }
     }
   }, [loggedIn]);
 
   React.useEffect(() => {
-    setAllMoviesAreShown(moviesArrayForRender.length === filteredMovies.length);
+    const lastMovieIsShown = (moviesArrayForRender.length === filteredMovies.length) ? true : false;
+    setAllMoviesAreShown(lastMovieIsShown);
+    localStorage.setItem("allMoviesAreShown", lastMovieIsShown ? true : "");
   }, [moviesArrayForRender]);
 
   const handleFindMovies = (stringToSearch, shortMovieOnly) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     setLastSearchingString(stringToSearch);
 
     const movieArrayAfterSearch = movies.filter((item) => {
@@ -126,13 +141,22 @@ function App() {
             item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()));
     });
     setFilteredMovies(movieArrayAfterSearch);
-    setMoviesArrayForRender(
-      movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
-    );
+    const tempArrayForRender = movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
+    setMoviesArrayForRender(tempArrayForRender);
     localStorage.setItem("movieArrayAfterSearch", JSON.stringify(movieArrayAfterSearch));
     localStorage.setItem("stringToSearch", stringToSearch);
     localStorage.setItem("shortMovieOnly", shortMovieOnly ? shortMovieOnly : "");
-    setIsLoading(false);
+    if (movieArrayAfterSearch.length === 0) {
+      setMovieIsFound(false);
+    } else {
+      setTimeout(() => {
+        setMovieIsFound(true);
+        // setIsLoading(false);
+      }, 600);
+      // setMovieIsFound(true);
+    }
+    localStorage.setItem("moviesArrayForRender", JSON.stringify(tempArrayForRender));
+    // setIsLoading(false);
   };
 
   const handleShowMoreMovies = () => {
@@ -264,17 +288,20 @@ function App() {
   };
 
   const handleSignOut = () => {
+    history.push("/");
     setLoggedIn(false);
     setLastSearchingString("");
     setMoviesArrayForRender([]);
     setAllMoviesAreShown(true);
     setMovieIsFound(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("movieArrayAfterSearch");
-    localStorage.removeItem("stringToSearch");
-    localStorage.removeItem("shortMovieOnly");
-    localStorage.removeItem("renderedMoviesQuantity")
-    history.push("/");
+    setTimeout(() => {
+      localStorage.clear();
+    }, 500);
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("movieArrayAfterSearch");
+    // localStorage.removeItem("stringToSearch");
+    // localStorage.removeItem("shortMovieOnly");
+    // localStorage.removeItem("renderedMoviesQuantity")
   };
 
   return (
@@ -335,8 +362,10 @@ function App() {
               setLastSearchingString={setLastSearchingString}
               shortFilmsOnlyStatus={shortFilmsOnlyStatus}
               setShortFilmsOnlyStatus={setShortFilmsOnlyStatus}
-              movieArrayFromLocalStorage={movieArrayFromLocalStorage}
-              setMovieArrayFromLocalStorage={setMovieArrayFromLocalStorage}
+              // movieArrayFromLocalStorage={movieArrayFromLocalStorage}
+              // setMovieArrayFromLocalStorage={setMovieArrayFromLocalStorage}
+              searchStringIsMissed={searchStringIsMissed}
+              setSearchStringIsMissed={setSearchStringIsMissed}
             ></ProtectedRoute>
 
             <ProtectedRoute

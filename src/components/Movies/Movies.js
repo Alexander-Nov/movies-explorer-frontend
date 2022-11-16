@@ -27,9 +27,11 @@ function Movies({
   setIsMobileMenuOpened,
   shortFilmsOnlyStatus,
   setShortFilmsOnlyStatus,
+  searchStringIsMissed,
+  setSearchStringIsMissed,
 }) {
 
-  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
+  // const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -56,6 +58,7 @@ function Movies({
       />
       <SearchForm
         setMovieIsFound={setMovieIsFound}
+        setIsLoading={setIsLoading}
         onSearch={onSearch}
         lastSearchingString={lastSearchingString}
         shortFilmsOnlyStatus={shortFilmsOnlyStatus}

@@ -9,6 +9,7 @@ function SearchForm ({
   setShortFilmsOnlyStatus,
   setSearchStringIsMissed,
   isSavedMoviesPage,
+  setIsLoading,
 })  {
 
   const [searchingMovieTitle, setSearchingMovieTitle] = React.useState(lastSearchingString ? lastSearchingString : "");
@@ -36,10 +37,17 @@ function SearchForm ({
       onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
     } else if (searchingMovieTitle.length === 0) {
       setSearchStringIsMissed(true);
+      setIsLoading(false);
       setMovieIsFound(false);
     } else {
-      setMovieIsFound(true);
+      setSearchStringIsMissed(false);
+      setIsLoading(true); // включил показ компоненты прелоадера
+      setMovieIsFound(false); //отключил показ результатов, чтобы мог отобразиться прелоадер
       onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
+      setTimeout(() => {
+        // setMovieIsFound(true);
+        setIsLoading(false);
+      }, 1000);
     }
   }
 
