@@ -9,12 +9,10 @@ function Register({ onAddUser, isInputDisabled }) {
     register,
     formState: { errors, isValid },
     handleSubmit,
-    reset,
   } = useForm({mode:"onChange"});
 
   const onSubmit = (data) => {
     onAddUser({ name: data.name, email: data.email, password: data.password });
-    reset();
   };
 
   return (

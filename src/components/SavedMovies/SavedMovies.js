@@ -1,7 +1,6 @@
 import React from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { mainApi } from "../../utils/MainApi";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 
@@ -9,13 +8,9 @@ function SavedMovies({
   loggedIn,
   isMobileMenuOpened,
   setIsMobileMenuOpened,
-  isLoading,
-  movieIsFound,
   setMovieIsFound,
   movieList,
   savedMovies,
-  setSavedMovies,
-  setFilteredSavedMovies,
   baseUrl,
   onLike,
   onDislike,
@@ -23,19 +18,6 @@ function SavedMovies({
 }) {
 
   const [shortSavedFilmsOnlyStatus, setShortSavedFilmsOnlyStatus] = React.useState(false);
-
-  React.useEffect(() => {
-    mainApi.updateToken();
-    mainApi
-      .getMovies()
-      .then((resMovies) => {
-        setSavedMovies(resMovies);
-        setFilteredSavedMovies(resMovies);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   return (
     <section className="movies">

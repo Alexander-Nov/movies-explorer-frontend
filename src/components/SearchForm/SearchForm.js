@@ -41,13 +41,7 @@ function SearchForm ({
       setMovieIsFound(false);
     } else {
       setSearchStringIsMissed(false);
-      setIsLoading(true); // включил показ компоненты прелоадера
-      setMovieIsFound(false); //отключил показ результатов, чтобы мог отобразиться прелоадер
       onSearch(searchingMovieTitle, shortFilmsOnlyStatus);
-      setTimeout(() => {
-        // setMovieIsFound(true);
-        setIsLoading(false);
-      }, 1000);
     }
   }
 

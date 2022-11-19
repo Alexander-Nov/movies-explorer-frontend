@@ -3,7 +3,6 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreMoviesButton from "../MoreMoviesButton/MoreMoviesButton";
 import MoviesNotFound from "../MoviesNotFound/MoviesNotFound";
-import { mainApi } from "../../utils/MainApi";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 
@@ -31,23 +30,14 @@ function Movies({
   setSearchStringIsMissed,
 }) {
 
-  // const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
-
-  React.useEffect(() => {
-    setIsLoading(true);
-    mainApi.updateToken();
-    mainApi
-      .getMovies()
-      .then((resMovies) => {
-        setSavedMovies(resMovies);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+   React.useEffect(() => {
+    if (movieList.length > 0) {
+      setMovieIsFound(true);
+    } else {
+      setMovieIsFound(false);
+    }
+    setIsLoading(false);
+  }, [movieList]);
 
   return (
     <section className="movies">
@@ -75,6 +65,7 @@ function Movies({
             savedMovies={savedMovies}
             setSavedMovies={setSavedMovies}
             shortFilmsOnlyStatus={shortFilmsOnlyStatus}
+            setMovieIsFound={setMovieIsFound}
           />
           {!allMoviesAreShown ? (
             <MoreMoviesButton onMoreMoviesClick={onMoreMoviesClick} />

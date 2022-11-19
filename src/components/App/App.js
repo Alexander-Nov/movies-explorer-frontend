@@ -18,34 +18,45 @@ import InfoTooltipPopup from "../InfoTooltipPopup/InfoTooltipPopup";
 import * as constants from "../../utils/constants";
 
 function App() {
-  let moviesIsPresent = (JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
-  const [isLoading, setIsLoading] = React.useState(true); // изменение аънадписей кнопок при ожидании ответа от сервера
+  let moviesIsPresent = JSON.parse(
+    localStorage.getItem("movieArrayAfterSearch")
+  );
+  let movies = JSON.parse(localStorage.getItem("films")) || [];
+  const [isLoading, setIsLoading] = React.useState(true); // изменение надписей кнопок при ожидании ответа от сервера
   const [movieIsFound, setMovieIsFound] = React.useState(moviesIsPresent ? true : false); // управляет заглушкой "Ничего не найдено"
   const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
-  const [movies, setMovies] = React.useState([]); // массив фильмов для основной страницы
   const [savedMovies, setSavedMovies] = React.useState([]); // массив фильмов для страницы сохраненных фильмов
-  const [filteredMovies, setFilteredMovies] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")) || []); // массив фильмов по результатам поиска
+  const [filteredMovies, setFilteredMovies] = React.useState(
+    JSON.parse(localStorage.getItem("movieArrayAfterSearch")) || []
+  ); // массив фильмов по результатам поиска
   const [filteredSavedMovies, setFilteredSavedMovies] = React.useState([]); // массив фильмов по результатам поиска на стр. сохраненных
-  const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("Начальное сообщение - потом удалить");
+  const [infoTooltipMessage, setInfoTooltipMessage] = React.useState("");
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const [isResultSuccess, setIsResultSuccess] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(
     localStorage.getItem("token") ? true : false
   );
   const [currentUser, setCurrentUser] = React.useState({});
-  const [moviesArrayForRender, setMoviesArrayForRender] = React.useState(JSON.parse(localStorage.getItem("moviesArrayForRender")) || []);
-  const [renderedMoviesQuantity, setRenderedMoviesQuantity] = React.useState(12);
+  const [moviesArrayForRender, setMoviesArrayForRender] = React.useState(
+    JSON.parse(localStorage.getItem("moviesArrayForRender")) || []
+  );
+  const [renderedMoviesQuantity, setRenderedMoviesQuantity] =
+    React.useState(12);
   const [moreMoviesQuantity, setMoreMoviesQuantity] = React.useState(3);
-  // const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(localStorage.getItem("allMoviesAreShown") ? true : false);
   const [allMoviesAreShown, setAllMoviesAreShown] = React.useState(true);
-  const [lastSearchingString, setLastSearchingString] = React.useState(localStorage.getItem("stringToSearch") || "");
-  const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(Boolean(localStorage.getItem("shortMovieOnly")));
+  const [lastSearchingString, setLastSearchingString] = React.useState(
+    localStorage.getItem("stringToSearch") || ""
+  );
+  const [shortFilmsOnlyStatus, setShortFilmsOnlyStatus] = React.useState(
+    Boolean(localStorage.getItem("shortMovieOnly"))
+  );
   const [currentWidth, setCurrentWidth] = React.useState(window.innerWidth);
   const baseUrl = "https://api.nomoreparties.co";
   const history = useHistory();
-  // const [movieArrayFromLocalStorage, setMovieArrayFromLocalStorage] = React.useState(JSON.parse(localStorage.getItem("movieArrayAfterSearch")));
   const [isInputDisabled, setIsInputDisabled] = React.useState(false);
-  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(localStorage.getItem("stringToSearch") ? false : true);
+  const [searchStringIsMissed, setSearchStringIsMissed] = React.useState(
+    localStorage.getItem("stringToSearch") ? false : true
+  );
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");
@@ -55,17 +66,11 @@ function App() {
         .then((res) => {
           setCurrentUser(res); //обновление данных пользователя в случае обновления страницы при наличии токена
           setLoggedIn(true);
-
-
-          // history.push("/movies");
         })
         .catch((err) => {
-          setLoggedIn(false);
-          // localStorage.removeItem("token");
-          // localStorage.removeItem("movieArrayAfterSearch");
-          // localStorage.removeItem("stringToSearch");
-          // localStorage.removeItem("shortMovieOnly");
-          // localStorage.removeItem("renderedMoviesQuantity")
+
+          handleSignOut();
+
           console.log(err);
         });
     }
@@ -73,13 +78,13 @@ function App() {
 
   React.useEffect(() => {
     const handleResize = () => {
-      setCurrentWidth(window.innerWidth)
+      setCurrentWidth(window.innerWidth);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
-  }
-}, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   React.useEffect(() => {
     if (currentWidth >= constants.DESKTOP.width) {
@@ -96,71 +101,131 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      // setIsLoading(true);
       mainApi.updateToken();
-      const localMovies = localStorage.getItem("films")
-      if (localMovies) {
-        setMovies(JSON.parse(localMovies))
-      } else {
-        moviesApi
-          .getMovies()
-          .then((resMovies) => {
-            setMovies(resMovies);
-            setMoviesArrayForRender(JSON.parse(localStorage.getItem("moviesArrayForRender")) || []);
-            setLastSearchingString(localStorage.getItem("stringToSearch") || "");
-          })
-          .catch((err) => {
-            setInfoTooltipMessage(constants,constants.commonServerError);
-            setIsPopupOpen(true);
-            console.log(err);
-          })
-          .finally(() => {
-            // setIsLoading(false);
-          });
-      }
+      mainApi
+        .getMovies()
+        .then((resMovies) => {
+          setSavedMovies(resMovies);
+          setFilteredSavedMovies(resMovies);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [loggedIn]);
 
   React.useEffect(() => {
-    const lastMovieIsShown = (moviesArrayForRender.length === filteredMovies.length) ? true : false;
+    const lastMovieIsShown =
+      moviesArrayForRender.length === filteredMovies.length ? true : false;
     setAllMoviesAreShown(lastMovieIsShown);
     localStorage.setItem("allMoviesAreShown", lastMovieIsShown ? true : "");
   }, [moviesArrayForRender]);
 
   const handleFindMovies = (stringToSearch, shortMovieOnly) => {
-    // setIsLoading(true);
     setLastSearchingString(stringToSearch);
-
-    const movieArrayAfterSearch = movies.filter((item) => {
-      return shortMovieOnly
-        ? ((item.duration <= 40 &&
-            item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase())) ||
-            (item.duration <= 40 &&
-            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase())))
-        : (item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase()) ||
-            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()));
-    });
-    setFilteredMovies(movieArrayAfterSearch);
-    const tempArrayForRender = movieArrayAfterSearch.slice(0, renderedMoviesQuantity)
-    setMoviesArrayForRender(tempArrayForRender);
-    localStorage.setItem("movieArrayAfterSearch", JSON.stringify(movieArrayAfterSearch));
-    localStorage.setItem("stringToSearch", stringToSearch);
-    localStorage.setItem("shortMovieOnly", shortMovieOnly ? shortMovieOnly : "");
-    if (movieArrayAfterSearch.length === 0) {
-      setMovieIsFound(false);
+    let localMovies = JSON.parse(localStorage.getItem("films"));
+    if (localMovies) {
+      const movieArrayAfterSearch = movies.filter((item) => {
+        return shortMovieOnly
+          ? (item.duration <= 40 &&
+              item.nameRU
+                .toLowerCase()
+                .includes(stringToSearch.toLowerCase())) ||
+              (item.duration <= 40 &&
+                item.nameEN
+                  .toLowerCase()
+                  .includes(stringToSearch.toLowerCase()))
+          : item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase()) ||
+              item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase());
+      });
+      setFilteredMovies(movieArrayAfterSearch);
+      const tempArrayForRender = movieArrayAfterSearch.slice(
+        0,
+        renderedMoviesQuantity
+      );
+      setMoviesArrayForRender(tempArrayForRender);
+      localStorage.setItem(
+        "movieArrayAfterSearch",
+        JSON.stringify(movieArrayAfterSearch)
+      );
+      localStorage.setItem("stringToSearch", stringToSearch);
+      localStorage.setItem(
+        "shortMovieOnly",
+        shortMovieOnly ? shortMovieOnly : ""
+      );
+      localStorage.setItem(
+        "moviesArrayForRender",
+        JSON.stringify(tempArrayForRender)
+      );
     } else {
-      setTimeout(() => {
-        setMovieIsFound(true);
-        // setIsLoading(false);
-      }, 600);
-      // setMovieIsFound(true);
+      setIsLoading(true); // включил показ компоненты прелоадера
+      setMovieIsFound(false); //отключил показ результатов, чтобы мог отобразиться прелоадер
+      mainApi.updateToken();
+      mainApi
+        .getMovies()
+        .then((resMovies) => {
+          setSavedMovies(resMovies);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      moviesApi
+        .getMovies()
+        .then((resMovies) => {
+          localStorage.setItem("films", JSON.stringify(resMovies));
+          movies = resMovies;
+          const movieArrayAfterSearch = movies.filter((item) => {
+            return shortMovieOnly
+              ? (item.duration <= 40 &&
+                  item.nameRU
+                    .toLowerCase()
+                    .includes(stringToSearch.toLowerCase())) ||
+                  (item.duration <= 40 &&
+                    item.nameEN
+                      .toLowerCase()
+                      .includes(stringToSearch.toLowerCase()))
+              : item.nameRU
+                  .toLowerCase()
+                  .includes(stringToSearch.toLowerCase()) ||
+                  item.nameEN
+                    .toLowerCase()
+                    .includes(stringToSearch.toLowerCase());
+          });
+          setFilteredMovies(movieArrayAfterSearch);
+          const tempArrayForRender = movieArrayAfterSearch.slice(
+            0,
+            renderedMoviesQuantity
+          );
+          setMoviesArrayForRender(tempArrayForRender);
+          localStorage.setItem(
+            "movieArrayAfterSearch",
+            JSON.stringify(movieArrayAfterSearch)
+          );
+          localStorage.setItem("stringToSearch", stringToSearch);
+          localStorage.setItem(
+            "shortMovieOnly",
+            shortMovieOnly ? shortMovieOnly : ""
+          );
+          localStorage.setItem(
+            "moviesArrayForRender",
+            JSON.stringify(tempArrayForRender)
+          );
+        })
+        .catch((err) => {
+          setInfoTooltipMessage(constants, constants.commonServerError);
+          setIsPopupOpen(true);
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setMovieIsFound(true);
+        });
     }
-    localStorage.setItem("moviesArrayForRender", JSON.stringify(tempArrayForRender));
-    // setIsLoading(false);
   };
 
   const handleShowMoreMovies = () => {
-    const newMaxMoviesQuantity = moviesArrayForRender.length + moreMoviesQuantity;
+    const newMaxMoviesQuantity =
+      moviesArrayForRender.length + moreMoviesQuantity;
     setMoviesArrayForRender(filteredMovies.slice(0, newMaxMoviesQuantity));
     localStorage.setItem("renderedMoviesQuantity", newMaxMoviesQuantity);
   };
@@ -168,12 +233,12 @@ function App() {
   const handleFindSavedMovies = (stringToSearch, shortMovieOnly) => {
     const movieArrayAfterSearch = savedMovies.filter((item) => {
       return shortMovieOnly
-        ? ((item.duration <= 40 &&
+        ? (item.duration <= 40 &&
             item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase())) ||
             (item.duration <= 40 &&
-            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase())))
-        : (item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase()) ||
-            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()));
+              item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase()))
+        : item.nameRU.toLowerCase().includes(stringToSearch.toLowerCase()) ||
+            item.nameEN.toLowerCase().includes(stringToSearch.toLowerCase());
     });
     setFilteredSavedMovies(movieArrayAfterSearch);
   };
@@ -183,7 +248,8 @@ function App() {
       .postNewMovie(newMovie) //записываем фильм в нашу БД
       .then((movie) => {
         const newSavedMovies = [movie, ...savedMovies];
-        setSavedMovies(newSavedMovies); //сохраняем в локальный стейт
+        setSavedMovies(newSavedMovies);
+        setFilteredSavedMovies(newSavedMovies);
       })
       .catch((err) => {
         console.log(err);
@@ -201,20 +267,31 @@ function App() {
 
   function handleDislikeClick(movie) {
     const deletingMovie = findMovieForDelete(movie);
-    mainApi
-      .deleteMovie(deletingMovie)
+    mainApi.deleteMovie(deletingMovie)
+      .then(() => {
+        mainApi
+          .getMovies()
+            .then((resMovies) => {
+              setSavedMovies(resMovies);
+              setFilteredSavedMovies((state) =>state.filter((m) => m.movieId !== movie.id));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+      })
       .catch((err) => {
-        console.log(err);
-      });
+      console.log(err);
+    });
   }
 
   function handleDislikeClickFromSaved(movie) {
-    const deletingMovie = findMovieForDelete(movie._id);
     mainApi
       .deleteMovie(movie)
       .then(() => {
         setSavedMovies((state) => state.filter((m) => m._id !== movie._id));
-        setFilteredSavedMovies((state) => state.filter((m) => m._id !== movie._id));
+        setFilteredSavedMovies((state) =>
+          state.filter((m) => m._id !== movie._id)
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -243,7 +320,6 @@ function App() {
         }
       })
       .catch((err) => {
-        setIsLoading(false);
         setInfoTooltipMessage(
           `Ошибка входа: ${err}. Проверьте вводимые данные и попробуйте еще раз.`
         );
@@ -257,23 +333,21 @@ function App() {
     mainApi
       .register(name, email, password)
       .then((res) => {
-          handleSignInSubmit({
-            email: res.email,
-            password: pass,
-          });
+        handleSignInSubmit({
+          email: res.email,
+          password: pass,
+        });
       })
       .catch((err) => {
         setInfoTooltipMessage(`Ошибка при регистрации: ${err}`);
         setIsPopupOpen(true);
-       })
+      })
       .finally((res) => {
-        setIsLoading(false);
         setIsInputDisabled(false);
       });
   };
 
   const handleUpdateUser = (newUserData) => {
-    setIsLoading(true);
     mainApi
       .setUserInfo(newUserData)
       .then((res) => {
@@ -281,9 +355,6 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
@@ -297,11 +368,6 @@ function App() {
     setTimeout(() => {
       localStorage.clear();
     }, 500);
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("movieArrayAfterSearch");
-    // localStorage.removeItem("stringToSearch");
-    // localStorage.removeItem("shortMovieOnly");
-    // localStorage.removeItem("renderedMoviesQuantity")
   };
 
   return (
@@ -351,7 +417,6 @@ function App() {
               savedMovies={savedMovies}
               setSavedMovies={setSavedMovies}
               movieList={moviesArrayForRender}
-              setMoviesArrayForRender={setMoviesArrayForRender}
               baseUrl={baseUrl}
               onLike={handleLikeClick}
               onDislike={handleDislikeClick}
@@ -362,8 +427,6 @@ function App() {
               setLastSearchingString={setLastSearchingString}
               shortFilmsOnlyStatus={shortFilmsOnlyStatus}
               setShortFilmsOnlyStatus={setShortFilmsOnlyStatus}
-              // movieArrayFromLocalStorage={movieArrayFromLocalStorage}
-              // setMovieArrayFromLocalStorage={setMovieArrayFromLocalStorage}
               searchStringIsMissed={searchStringIsMissed}
               setSearchStringIsMissed={setSearchStringIsMissed}
             ></ProtectedRoute>
@@ -374,12 +437,8 @@ function App() {
               loggedIn={loggedIn}
               isMobileMenuOpened={isMobileMenuOpened}
               setIsMobileMenuOpened={setIsMobileMenuOpened}
-              isLoading={isLoading}
-              movieIsFound={movieIsFound}
               setMovieIsFound={setMovieIsFound}
               savedMovies={savedMovies}
-              setSavedMovies={setSavedMovies}
-              setFilteredSavedMovies={setFilteredSavedMovies}
               movieList={filteredSavedMovies}
               baseUrl={baseUrl}
               onLike={handleLikeClick}

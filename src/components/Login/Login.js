@@ -9,12 +9,10 @@ function Login ({ onEnterUser, isInputDisabled }) {
     register,
     formState: { errors, isValid },
     handleSubmit,
-    reset,
   } = useForm({mode:"onChange"});
 
   const onSubmit = (data) => {
     onEnterUser({ email: data.email, password: data.password });
-    reset();
 }
 
   return (

@@ -28,6 +28,7 @@ function MoviesCardList ({ movieList, savedMovies, baseUrl, onLike, onDislike })
                 baseUrl={baseUrl}
                 onLike={onLike}
                 onDislike={onDislike}
+                savedMovies={savedMovies}
               />
             )
           }
@@ -44,7 +45,6 @@ function MoviesCardList ({ movieList, savedMovies, baseUrl, onLike, onDislike })
           )
         }
       }
-
         )}
 
     </section>
