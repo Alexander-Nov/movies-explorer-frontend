@@ -1,8 +1,14 @@
 .header {
-  width: calc(100% - 2*70px);
+  /* width: calc(100% - 2*70px); */
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 18px 0;
+}
+
+.header_spaced {
+  width: calc(100% - 2*70px);
   padding: 18px 70px;
 }
 

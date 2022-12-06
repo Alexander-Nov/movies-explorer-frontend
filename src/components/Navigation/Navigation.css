@@ -87,6 +87,10 @@
   padding: 9px 9px;
 }
 
+.navigation__profile-image_dark {
+  background-color: #DDDEE3;
+}
+
 .navigation__burger-menu {
   display: none;
 }

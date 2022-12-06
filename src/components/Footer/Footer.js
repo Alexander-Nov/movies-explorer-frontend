@@ -1,9 +1,12 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 function Footer(props) {
 
+  const userLocationPath = useLocation().pathname;
+
     return (
-      <header className="footer">
+      <footer className={`footer ${userLocationPath === "/" ? "footer_spaced" : ""}`}>
         <h4 className="footer__title">
           Учебный проект Яндекс.Практикум х BeatFilm.
         </h4>
@@ -18,7 +21,7 @@ function Footer(props) {
             </a>
           </div>
         </div>
-      </header>
+      </footer>
     );
 
 }

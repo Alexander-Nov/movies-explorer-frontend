@@ -4,8 +4,6 @@ import Techs from "../Techs/Techs.js";
 import AboutProject from "../AboutProject/AboutProject.js";
 import AboutMe from "../AboutMe/AboutMe.js";
 
-
-
 function Main (props)  {
   return (
     <div className="main">

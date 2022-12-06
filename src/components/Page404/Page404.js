@@ -12,7 +12,6 @@ function Page404() {
       <h1 className="page404__title">404</h1>
       <p className="page404__text">Страница не найдена</p>
       <button className="page404__go-back-link" onClick={goBack}>Назад</button>
-
     </section>
   );
 }

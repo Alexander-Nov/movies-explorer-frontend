@@ -1,45 +1,63 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-function MoviesCard({ card }) {
-  const [isLiked, setIsLiked] = React.useState(true); // пока устанавливаем без связи с БД
-  const cardLikeButtonClassName = `card__heart${isLiked ? " card__heart_active" : ""}`;
+function MoviesCard({ card, baseUrl, onLike, onDislike, savedMovies }) {
+  const isLiked = savedMovies.some(item => (item.movieId === card.id));
+  const filmDurationHours = Math.round(card.duration / 60);
+  const filmDurationMinutes = card.duration % 60;
 
   function handleLikeClick() {
-    // onCardLike(card);
-    setIsLiked(!isLiked);
+    onLike(
+      {
+        "country": card.country,
+        "director": card.director,
+        "duration": card.duration,
+        "year": card.year,
+        "description": card.description,
+        "image": card.image.url,
+        "trailerLink": card.trailerLink,
+        "nameRU": card.nameRU,
+        "nameEN": card.nameEN,
+        "thumbnail": card.image.previewUrl,
+        "movieId": card.id
+      }
+  );
   }
 
-  function handleDeleteClick() {
-
+  function handleDislikeClick() {
+    onDislike(card);
   }
 
   return (
     <section className="card">
-      <img className="card__image" src={card.image} alt={card.title} />
+      <a href={card.trailerLink} target="_blanc" className="card__link">
+        <img className="card__image" src={`${baseUrl}${card.image.url || card.image}`} alt={card.nameRU} />
+      </a>
       <div className="card__title-block">
-        <p className="card__title">{card.title}</p>
+      <a href={card.trailerLink} target="_blanc" className="card__link">
+        <p className="card__title">{card.nameRU}</p>
+      </a>
 
         <Route path="/movies">
           <button
-            className={cardLikeButtonClassName}
+            className={`card__heart${isLiked ? " card__heart_active" : ""}`}
             type="button"
-            onClick={handleLikeClick}
+            onClick={isLiked ? handleDislikeClick : handleLikeClick}
             aria-label="Нравится"
           ></button>
         </Route>
 
         <Route path="/saved-movies">
           <button
-            className="card__delete-button card__delete-button_hidden"
+            className="card__delete-button"
             type="button"
-            onClick={handleDeleteClick}
+            onClick={handleDislikeClick}
             aria-label="Удалить из избранного"
           ></button>
         </Route>
 
       </div>
-      <p className="card__length">{card.length}</p>
+      <p className="card__length">{`${filmDurationHours}ч ${filmDurationMinutes}м`}</p>
     </section>
   );
 }

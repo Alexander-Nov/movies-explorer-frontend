@@ -5,7 +5,7 @@ import Portfolio from "../Portfolio/Portfolio";
 
 function AboutMe(props) {
   return (
-    <div className="about-me">
+    <section className="about-me">
       <h2 className="about-me__title">Студент</h2>
       <div className="about-me__info-block">
         <div className="about-me__text-block">
@@ -29,7 +29,7 @@ function AboutMe(props) {
 
       <Portfolio />
 
-    </div>
+    </section>
   );
 }
 

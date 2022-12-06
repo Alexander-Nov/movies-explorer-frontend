@@ -4,14 +4,16 @@ import Navigation from "../Navigation/Navigation";
 import { Link, useLocation } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 
-function Header({ isMobileMenuOpened, setIsMobileMenuOpened }) {
+function Header({ loggedIn, isMobileMenuOpened, setIsMobileMenuOpened }) {
 
   const userLocationPath = useLocation().pathname;
 
     return (
       <header
         className={`header ${
-          userLocationPath === "/" ? "header_dark-background" : ""
+          userLocationPath === "/" ? "header_dark-background header_spaced" : ""
+        } ${
+          userLocationPath === "/profile" ? "header_spaced" : ""
         }`}
       >
         <Link to="/" className="header__logo-link">
@@ -23,6 +25,7 @@ function Header({ isMobileMenuOpened, setIsMobileMenuOpened }) {
         </Link>
 
         <Navigation
+          loggedIn={loggedIn}
           isMobileMenuOpened={isMobileMenuOpened}
           setIsMobileMenuOpened={setIsMobileMenuOpened}
         />

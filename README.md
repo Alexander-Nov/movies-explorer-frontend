@@ -3,6 +3,7 @@
 
 # ССЫЛКА НА МАКЕТ - https://disk.yandex.ru/d/dISGEmxux57-JA
 
+# Ссылка на пул-реквест - https://github.com/Alexander-Nov/movies-explorer-frontend/pull/2
 
 
 ## Информация о размещении проекта в сети интернет:
@@ -11,6 +12,8 @@ IP-адрес: 84.201.164.23
 URL страницы: https://diplom.novoselov.nomorepartiesxyz.ru
 
 API-сервер: https://api.diplom.novoselov.nomorepartiesxyz.ru
+
+
 
 ## Запуск проекта
 
